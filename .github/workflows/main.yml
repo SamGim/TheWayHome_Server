@@ -1,0 +1,30 @@
+name: Spring Server CI/CD
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시할 때 작동
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17  # 원하는 Java 버전으로 변경
+
+      - name: Build and test Spring application
+        run: |
+          ./gradlew build --no-daemon
+          ./gradlew test
+
+      - name: Deploy to Server
+        run: |
+          # 서버에 애플리케이션 배포 스크립트 실행
+          # 예: scp, SSH, Docker, Kubernetes 등을 사용하여 배포
+
