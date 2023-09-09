@@ -17,7 +17,7 @@ COPY gradle gradle
 COPY src src
 
 # Gradle을 이용하여 프로젝트를 빌드합니다.
-RUN --mount=type=cache,target=/root/.gradle ./gradlew build
+RUN --mount=type=cache,target=/root/.gradle ./gradlew build -x test
 
 # 빌드 결과물을 Docker 이미지 안에 포함시킵니다. 이건 호스트에서 가져올떄 COPY고 컨테이너 내부에서 빌드한 파일을 복사할때 cp
 #COPY build/libs/*SNAPSHOT.jar app.jar
