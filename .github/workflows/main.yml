@@ -38,4 +38,23 @@ jobs:
 
           # 서버에 애플리케이션 배포 스크립트 실행
           # 예: scp, SSH, Docker, Kubernetes 등을 사용하여 배포
-
+  deploy:
+    # main 브랜치 일때만 작동
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - uses: actions/checkout@v3
+      - name: Add Server key
+        run: |
+          touch key.txt && echo "${{ secrets.SERVER_KEY }}" > key.txt
+          chmod 600 key.txt
+      - name: Deploy the application
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+      - run: |
+          set -e
+          ./deploy.sh
