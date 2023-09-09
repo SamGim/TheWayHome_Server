@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: 17  # 원하는 Java 버전으로 변경
-          distribution: ubuntu
+          distribution: 'temurin'
 
 
       - name: Build and test Spring application
