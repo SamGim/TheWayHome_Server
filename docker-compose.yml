@@ -36,8 +36,8 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-    volumes:
-      - /home/tagotago/data/media:/data/media
+#    volumes:
+#      - /home/tagotago/data/media:/data/media
 
 networks:
   wayhome-net:
