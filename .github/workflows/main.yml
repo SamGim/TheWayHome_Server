@@ -31,7 +31,11 @@ jobs:
           arguments: build
 
       - name: Deploy to Server
-        run: |
+        uses: actions/checkout@v3
+
+      - run: docker build -t thewayhome-server:0.0.1 .
+      - run: docker-compose -d up
+
           # 서버에 애플리케이션 배포 스크립트 실행
           # 예: scp, SSH, Docker, Kubernetes 등을 사용하여 배포
 

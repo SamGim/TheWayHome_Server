@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  app:
+    image: thewayhome-server:0.0.1  # 스프링부트 어플리케이션의 이미지 이름과 태그
+    build:
+      context: .
+    ports:
+      - "80:8080"  # 호스트 머신의 8080 포트와 컨테이너 내부의 8080 포트를 매핑
+    depends_on:
+      db:  # db 서비스가 먼저 실행되어야 함
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/wayhome?createDatabaseIfNotExist=TRUE&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: wodyd78910**
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    networks:
+      - wayhome-net
+#    volumes:
+#      - /home/tagotago/data/media:/data/media
+
+  db:
+    image: mysql:8.0  # MySQL 이미지 이름과 태그
+    command: --default-authentication-plugin=mysql_native_password  # MySQL 8.0 이상 버전일 경우 인증 방식 지정
+    environment:
+      MYSQL_ROOT_PASSWORD: wodyd78910**
+      MYSQL_DATABASE: wayhome
+    networks:
+      - wayhome-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - /home/tagotago/data/media:/data/media
+
+networks:
+  wayhome-net:
+    driver: bridge
