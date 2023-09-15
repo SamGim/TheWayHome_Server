@@ -1,7 +1,9 @@
 package com.thewayhome.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
 
 @Entity
@@ -14,7 +16,6 @@ import lombok.*;
 public class Complex {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
     @Column(name = "article_no")
     private Long articleNo;
     @Column(name = "article_name")
@@ -31,8 +32,11 @@ public class Complex {
     private String realtorName;
     @Column(name = "latitude")
     private Double latitude;
+    @Column(name = "location", columnDefinition="POINT")
+    private Point location;
     @Column(name = "longitude")
     private Double longitude;
+
     @Column(name = "area1")
     private String area1;
     @Column(name = "area2")
@@ -48,5 +52,4 @@ public class Complex {
     @Column(name = "complex_name")
     private String complexName;
 
-    // 생성자, getter 및 setter 메서드 추가
 }
