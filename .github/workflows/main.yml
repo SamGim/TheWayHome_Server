@@ -49,7 +49,7 @@ jobs:
       - name: Add Server key
         run: |
           touch key.txt && echo "${{ secrets.SERVER_KEY }}" > key.txt
-          chmod 400 key.txt
+          chmod 600 key.txt
       - name: Deploy the application
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
