@@ -5,7 +5,7 @@ echo ${SERVER_PORT}
 echo ${SERVER_USER}
 echo ${SERVER_HOST}
 ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -t -t -o StrictHostKeyChecking=no << 'ENDSSH'
-
+wsl
 CONTAINER_NAME=thewayhome
 VERSION=0.0.1
 
