@@ -1,7 +1,9 @@
 #!/bin/bash
 
 start=$(date +"%s")
-chmod 600 key.txt
+echo ${SERVER_PORT}
+echo ${SERVER_USER}
+echo ${SERVER_HOST}
 ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -t -t -o StrictHostKeyChecking=no << 'ENDSSH'
 
 CONTAINER_NAME=thewayhome
