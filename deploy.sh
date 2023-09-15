@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/zsh
 
 start=$(date +"%s")
 
 ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -o StrictHostKeyChecking=no << 'ENDSSH'
-wsl bash -c '
+wsl zsh -c '
 CONTAINER_NAME=thewayhome
 VERSION=0.0.1
 
