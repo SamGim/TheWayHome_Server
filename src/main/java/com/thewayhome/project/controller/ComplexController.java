@@ -1,0 +1,46 @@
+package com.thewayhome.project.controller;
+
+import com.thewayhome.project.domain.Complex;
+import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto;
+import com.thewayhome.project.service.ComplexService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Slf4j
+@RestController
+@RequestMapping("/complex")
+public class ComplexController {
+    private final ComplexService complexService;
+
+    @Autowired
+    public ComplexController(ComplexService complexService) {
+        this.complexService = complexService;
+    }
+
+    // 매물 목록 쿼리
+    @GetMapping("/list/inquery")
+    public ResponseEntity<List<ComplexSimpleRequestDto>> getComplexesWithinBoundingBox(
+            @RequestParam(name = "sw_lng") double swLng,
+            @RequestParam(name = "sw_lat") double swLat,
+            @RequestParam(name = "ne_lng") double neLng,
+            @RequestParam(name = "ne_lat") double neLat) {
+        return ResponseEntity.ok(complexService.getComplexesInBoundingBox(swLng, swLat, neLng, neLat));
+    }
+
+    // 단일 매물 detail 또는 card info 조회
+    @GetMapping("/info/inquery/{complexId}")
+    public ResponseEntity<Object> getComplexById(
+            @PathVariable long complexId,
+            @RequestParam Boolean detail) {
+        if (detail){
+            return ResponseEntity.ok(complexService.getComplexDetailInfo(complexId));
+        } else {
+            return ResponseEntity.ok(complexService.getComplexCardInfo(complexId));
+        }
+    }
+
+}
