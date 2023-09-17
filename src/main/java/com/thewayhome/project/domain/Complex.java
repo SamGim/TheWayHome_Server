@@ -32,11 +32,10 @@ public class Complex {
     private String realtorName;
     @Column(name = "latitude")
     private Double latitude;
-    @Column(name = "location", columnDefinition="POINT")
-    private Point location;
     @Column(name = "longitude")
     private Double longitude;
-
+    @Column(name = "location", columnDefinition="POINT")
+    private Point location;
     @Column(name = "area1")
     private String area1;
     @Column(name = "area2")
