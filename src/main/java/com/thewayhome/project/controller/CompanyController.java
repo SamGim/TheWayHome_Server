@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,11 +47,14 @@ public class CompanyController {
 
     // 회사 id로 좌표 쿼리
     @GetMapping("/{id}")
-    public ResponseEntity<Company> getCompanyById(
+    public ResponseEntity<Map<String, Object>> getCompanyById(
             @PathVariable Long id
     ){
         Company company = companyService.getCompanyById(id).orElseThrow(()-> new CustomException(CustomError.NO_DATA_ERROR));
-        return ResponseEntity.ok(company);
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("latitude", company.getLatitude());
+        responseMap.put("longitude", company.getLongitude());
+        return ResponseEntity.ok(responseMap);
     }
 
 }
