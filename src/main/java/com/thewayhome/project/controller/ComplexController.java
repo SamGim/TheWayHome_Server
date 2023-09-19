@@ -2,8 +2,11 @@ package com.thewayhome.project.controller;
 
 import com.thewayhome.project.domain.Complex;
 import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto;
+import com.thewayhome.project.exception.CustomError;
+import com.thewayhome.project.exception.CustomException;
 import com.thewayhome.project.service.ComplexService;
 import lombok.extern.slf4j.Slf4j;
+import org.locationtech.jts.io.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +44,16 @@ public class ComplexController {
         } else {
             return ResponseEntity.ok(complexService.getComplexCardInfo(complexId));
         }
+    }
+
+    @GetMapping("/update/location")
+    public ResponseEntity<String> updateLocationDate(){
+        try{
+            complexService.updatePointColumn();
+        } catch (ParseException e) {
+            throw new CustomException(CustomError.PARSE_ERROR);
+        }
+        return ResponseEntity.ok("finish");
     }
 
 }

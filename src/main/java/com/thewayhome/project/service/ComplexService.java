@@ -7,8 +7,12 @@ import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
 import com.thewayhome.project.repository.ComplexRepository;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +27,7 @@ public class ComplexService {
     }
 
     public List<ComplexSimpleRequestDto> getComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat) {
-        List<Complex> withinMap = complexRepository.findWithinMap(swLng, swLat, neLng, neLat);
+        List<Complex> withinMap = complexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
 
         return withinMap.stream()
                 .map(ComplexSimpleRequestDto::fromEntity)
@@ -37,5 +41,22 @@ public class ComplexService {
     public ComplexDetailRequestDto getComplexDetailInfo(Long id){
         Complex complex = complexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
         return ComplexDetailRequestDto.fromEntity(complex);
+    }
+
+    @Transactional
+    public void updatePointColumn() throws ParseException {
+        List<Complex> complexes = complexRepository.findAll();
+
+        for (Complex complex : complexes) {
+            Double latitude = complex.getLatitude();
+            Double longitude = complex.getLongitude();
+
+            Point point = (latitude != null && longitude != null)
+                    ? (Point) new WKTReader().read(String.format("POINT(%s %s)", latitude, longitude))
+                    : null;
+
+            complex.setLocation(point);
+            complexRepository.save(complex);
+        }
     }
 }
