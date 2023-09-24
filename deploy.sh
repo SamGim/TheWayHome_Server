@@ -24,7 +24,7 @@ IF DEFINED ContainerId (
 
     IF DEFINED RunningContainerId (
         echo "Container is running -> stopping it..."
-        docker-compose down
+        docker-compose down --rmi local
     )
 )
 
