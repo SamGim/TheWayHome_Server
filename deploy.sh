@@ -3,7 +3,7 @@
 start=$(date +"%s")
 
 ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -o StrictHostKeyChecking=no << 'ENDSSH'
-wsl zsh -c '
+wsl zsh -c "
 CONTAINER_NAME=thewayhome-server
 VERSION=0.0.1
 
@@ -23,7 +23,7 @@ if [ "$(docker ps -qa -f name=$CONTAINER_NAME)" ]; then
 fi
 
 docker-compose up -d
-'
+"
 exit
 ENDSSH
 
