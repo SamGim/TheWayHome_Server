@@ -3,28 +3,34 @@
 start=$(date +"%s")
 
 ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -o StrictHostKeyChecking=no << 'ENDSSH'
-wsl zsh -c '
-CONTAINER_NAME=thewayhome
-VERSION=0.0.1
+@echo off
+SET CONTAINER_NAME=thewayhome
+SET VERSION=0.0.1
 
-if [ ! -d TheWayHome_Server ]; then
-  git clone https://github.com/SamGim/TheWayHome_Server
-fi
+IF NOT EXIST TheWayHome_Server (
+    git clone https://github.com/SamGim/TheWayHome_Server
+)
 
 cd TheWayHome_Server
 git pull
-docker build -t $CONTAINER_NAME:$VERSION .
+docker build -t %CONTAINER_NAME%:%VERSION% .
 
-if [ "$(docker ps -qa -f name=$CONTAINER_NAME)" ]; then
-    if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
+FOR /F "tokens=*" %%i IN ('docker ps -qa -f name=%CONTAINER_NAME%') DO (
+    SET ContainerId=%%i
+)
+
+IF DEFINED ContainerId (
+    FOR /F "tokens=*" %%i IN ('docker ps -q -f name=%CONTAINER_NAME%') DO (
+        SET RunningContainerId=%%i
+    )
+
+    IF DEFINED RunningContainerId (
         echo "Container is running -> stopping it..."
         docker-compose down
-    fi
-fi
+    )
+)
 
 docker-compose up -d
-'
-exit
 ENDSSH
 
 if [ $? -eq 0 ]; then
