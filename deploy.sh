@@ -4,7 +4,7 @@ start=$(date +"%s")
 
 ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -o StrictHostKeyChecking=no << 'ENDSSH'
 wsl zsh -c '
-CONTAINER_NAME=thewayhome
+CONTAINER_NAME=thewayhome-server
 VERSION=0.0.1
 
 if [ ! -d TheWayHome_Server ]; then
