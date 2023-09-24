@@ -1,7 +1,5 @@
 #!/bin/bash
 
-start=$(date +"%s")
-
 ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -o StrictHostKeyChecking=no << 'ENDSSH'
 @echo off
 SET CONTAINER_NAME=thewayhome
@@ -33,14 +31,9 @@ IF DEFINED ContainerId (
 docker-compose up -d
 ENDSSH
 
+# 원격 서버로부터의 반환 코드 확인
 if [ $? -eq 0 ]; then
-  exit 0
+  echo "Deployment on remote server successful."
 else
-  exit 1
+  echo "Deployment on remote server failed."
 fi
-
-end=$(date +"%s")
-
-diff=$(($end - $start))
-
-echo "Deployed in : ${diff}s"
