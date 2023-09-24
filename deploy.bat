@@ -1,5 +1,5 @@
 @echo off
-setlocal
+set local
 set CONTAINER_NAME=thewayhome-server
 set VERSION=0.0.1
 
