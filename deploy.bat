@@ -20,7 +20,7 @@ if errorlevel 1 (
         echo Container exists but is not running.
     ) else (
         echo Container is running -> stopping it…
-        docker-compose down
+        docker-compose down --rmi local
     )
 )
 
