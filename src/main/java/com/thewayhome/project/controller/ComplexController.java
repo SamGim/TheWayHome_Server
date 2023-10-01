@@ -1,6 +1,6 @@
 package com.thewayhome.project.controller;
 
-import com.thewayhome.project.domain.Complex;
+import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto2;
 import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
@@ -54,6 +54,18 @@ public class ComplexController {
             throw new CustomException(CustomError.PARSE_ERROR);
         }
         return ResponseEntity.ok("finish");
+    }
+
+    @GetMapping("/list/inquery2")
+    public ResponseEntity<List<ComplexSimpleRequestDto2>> getComplexesWithinBoundingBox2(
+            @RequestParam(name = "sw_lng") double swLng,
+            @RequestParam(name = "sw_lat") double swLat,
+            @RequestParam(name = "ne_lng") double neLng,
+            @RequestParam(name = "ne_lat") double neLat,
+            @RequestParam(name = "co_lng") double coLng,
+            @RequestParam(name = "co_lat") double coLat) {
+        String coPoint = coLng + "," + coLat;
+        return ResponseEntity.ok(complexService.getComplexesInBoundingBox2(swLng, swLat, neLng, neLat, coPoint));
     }
 
 }
