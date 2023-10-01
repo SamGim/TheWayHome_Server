@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 public interface ComplexRepository extends JpaRepository<Complex, Long> {
 
-    @Query(value = "SELECT * FROM complex AS c WHERE MBRCONTAINS(ST_LINESTRINGFROMTEXT(CONCAT('LINESTRING(', :sw_lng, ' ', :sw_lat, ', ', :ne_lng, ' ', :ne_lat, ')')), c.location)", nativeQuery = true)
+    @Query(value = "SELECT * FROM complex AS c WHERE MBRCONTAINS(ST_LINESTRINGFROMTEXT(CONCAT('LINESTRING(', :ne_lat, ' ', :ne_lng, ', ', :sw_lat, ' ', :sw_lng, ')')), c.location)", nativeQuery = true)
     List<Complex> findComplexesInBoundingBox(
             @Param("sw_lng") double swLng,
             @Param("sw_lat") double swLat,
