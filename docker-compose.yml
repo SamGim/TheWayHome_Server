@@ -26,6 +26,8 @@ services:
 
   db:
     image: mysql:8.0  # MySQL 이미지 이름과 태그
+    ports:
+      - "3306:3306"  # 호스트 머신의 8080 포트와 컨테이너 내부의 8080 포트를 매핑
     command: --default-authentication-plugin=mysql_native_password  # MySQL 8.0 이상 버전일 경우 인증 방식 지정
     environment:
       MYSQL_ROOT_PASSWORD: wodyd78910**
