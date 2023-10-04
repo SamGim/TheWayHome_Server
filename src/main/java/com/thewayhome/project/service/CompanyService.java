@@ -32,6 +32,7 @@ public class CompanyService {
         try{
             return companyRepository.save(company);
         } catch (Exception e) {
+            System.out.println("e = " + e);
             throw new CustomException(CustomError.DB_SAVE_ERROR);
         }
     }

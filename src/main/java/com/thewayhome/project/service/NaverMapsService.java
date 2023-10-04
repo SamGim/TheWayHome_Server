@@ -65,12 +65,16 @@ public class NaverMapsService {
             }
 
         } catch(JsonProcessingException e){
+            System.out.println("e = " + e);
             throw new CustomException(CustomError.JSON_PROCESSING_ERROR);
         } catch (ProtocolException e) {
+            System.out.println("e = " + e);
             throw new CustomException(CustomError.HTTP_PROTOCOL_ERROR);
         } catch (MalformedURLException e) {
+            System.out.println("e = " + e);
             throw new CustomException(CustomError.MALFORMED_URL_ERROR);
         } catch (IOException e) {
+            System.out.println("e = " + e);
             throw new CustomException(CustomError.JAVA_IO_ERROR);
         }
 

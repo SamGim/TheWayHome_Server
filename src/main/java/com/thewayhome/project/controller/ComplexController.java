@@ -51,6 +51,7 @@ public class ComplexController {
         try{
             complexService.updatePointColumn();
         } catch (ParseException e) {
+            System.out.println("e = " + e);
             throw new CustomException(CustomError.PARSE_ERROR);
         }
         return ResponseEntity.ok("finish");
