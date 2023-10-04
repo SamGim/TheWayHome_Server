@@ -1,10 +1,7 @@
 package com.thewayhome.project.service;
 
 import com.thewayhome.project.domain.Complex;
-import com.thewayhome.project.dto.complex.ComplexCardRequestDto;
-import com.thewayhome.project.dto.complex.ComplexDetailRequestDto;
-import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto;
-import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto2;
+import com.thewayhome.project.dto.complex.*;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
 import com.thewayhome.project.repository.ComplexRepository;
@@ -68,5 +65,18 @@ public class ComplexService {
         return withinMap.stream()
                 .map(x -> ComplexSimpleRequestDto2.fromEntity(x, naverMapsService.getComplexToCompanyTime(x.getLongitude() + "," + x.getLatitude(), coPoint)))
                 .collect(Collectors.toList());
+    }
+
+    public Complex registerComplex(ComplexRegisterRequestDto complexDto) {
+        try{
+            Complex complex = complexDto.toEntity();
+            return complexRepository.save(complex);
+        } catch (ParseException e) {
+            System.out.println("e = " + e);
+            throw new CustomException(CustomError.PARSE_ERROR);
+        } catch (Exception e){
+            System.out.println("e = " + e);
+            throw new CustomException(CustomError.DB_SAVE_ERROR);
+        }
     }
 }

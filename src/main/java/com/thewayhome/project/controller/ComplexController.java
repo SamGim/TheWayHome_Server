@@ -1,5 +1,6 @@
 package com.thewayhome.project.controller;
 
+import com.thewayhome.project.dto.complex.ComplexRegisterRequestDto;
 import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto2;
 import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto;
 import com.thewayhome.project.exception.CustomError;
@@ -69,4 +70,8 @@ public class ComplexController {
         return ResponseEntity.ok(complexService.getComplexesInBoundingBox2(swLng, swLat, neLng, neLat, coPoint));
     }
 
+    @PostMapping
+    public ResponseEntity<Object> registerComplex(@RequestBody ComplexRegisterRequestDto complexDto){
+        return ResponseEntity.ok(complexService.registerComplex(complexDto));
+    }
 }
