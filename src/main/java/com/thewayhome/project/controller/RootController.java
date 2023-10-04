@@ -21,8 +21,8 @@ import static com.thewayhome.project.exception.CustomError.TEST_ERROR;
 public class RootController {
     @GetMapping("/heartbeat")
     public ResponseEntity<Object> isServerAlive(){
-        throw new CustomException(TEST_ERROR);
-//        return ResponseEntity.ok("connected");
+//        throw new CustomException(TEST_ERROR);
+        return ResponseEntity.ok("connected");
     }
 
 
