@@ -21,8 +21,6 @@ services:
         max-file: "10"
     networks:
       - wayhome-net
-#    volumes:
-#      - /home/tagotago/data/media:/data/media
 
   db:
     image: mysql:8.0  # MySQL 이미지 이름과 태그
@@ -38,8 +36,8 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-#    volumes:
-#      - /home/tagotago/data/media:/data/media
+    volumes:
+      - ./mysql-data:/var/lib/mysql
 
 networks:
   wayhome-net:
