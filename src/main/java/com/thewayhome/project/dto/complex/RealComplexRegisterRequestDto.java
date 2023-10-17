@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 public class RealComplexRegisterRequestDto {
     private Long id;
+    private String name;
     private String tradeTypeName;
     private String dealOrWarrantPrc;
     private String maintenanceCost;
@@ -40,6 +41,7 @@ public class RealComplexRegisterRequestDto {
                 ? (Point) new WKTReader().read(String.format("POINT(%s %s)", latitude, longitude))
                 : null;
         return RealComplex.builder()
+                .name(this.name)
                 .tradeTypeName(this.tradeTypeName)
                 .dealOrWarrantPrc(this.dealOrWarrantPrc)
                 .maintenanceCost(this.maintenanceCost)
