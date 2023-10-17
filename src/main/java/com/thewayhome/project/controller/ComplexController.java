@@ -1,8 +1,7 @@
 package com.thewayhome.project.controller;
 
-import com.thewayhome.project.dto.complex.ComplexRegisterRequestDto;
-import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto2;
-import com.thewayhome.project.dto.complex.ComplexSimpleRequestDto;
+import com.thewayhome.project.domain.RealComplex;
+import com.thewayhome.project.dto.complex.*;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
 import com.thewayhome.project.service.ComplexService;
@@ -11,6 +10,7 @@ import org.locationtech.jts.io.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -73,5 +73,14 @@ public class ComplexController {
     @PostMapping
     public ResponseEntity<Object> registerComplex(@RequestBody ComplexRegisterRequestDto complexDto){
         return ResponseEntity.ok(complexService.registerComplex(complexDto));
+    }
+    @PostMapping("/upload")
+    public ResponseEntity<RealComplexResponseDto> registerRealComplex(
+            @RequestPart RealComplexRegisterRequestDto complexDto,
+            @RequestPart MultipartFile mainImage,
+            @RequestPart List<MultipartFile> roomImages
+
+    ) {
+        return ResponseEntity.ok(complexService.registerRealComplex(complexDto, mainImage, roomImages));
     }
 }
