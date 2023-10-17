@@ -20,6 +20,10 @@ public class RealComplex {
     @Column(name = "id")
     private Long id;
 
+    // 매물 이름
+    @Column(name = "name")
+    private String name;
+
     // 거래유형(전세, 월세, 매매)
     @Column(name = "trade_type_name")
     private String tradeTypeName;
