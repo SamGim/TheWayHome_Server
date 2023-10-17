@@ -93,7 +93,7 @@ public class ComplexService {
     }
 
     @Transactional
-    public RealComplexResponseDto registerRealComplex(RealComplexRegisterRequestDto complexDto, MultipartFile mImage, List<MultipartFile> rImages){
+    public RealComplexDetailResponseDto registerRealComplex(RealComplexRegisterRequestDto complexDto, MultipartFile mImage, List<MultipartFile> rImages){
         try{
             RealComplex complex = complexDto.toEntity();
             ComplexImageResponseDto mImageDto = null;
@@ -126,7 +126,7 @@ public class ComplexService {
             }
             complex.setRoomImages(roomImages);
             realComplexRepository.save(complex);
-            return RealComplexResponseDto.fromEntity(complex, mImageDto, roomImagesDto);
+            return RealComplexDetailResponseDto.fromEntity(complex, mImageDto, roomImagesDto);
 
         } catch (ParseException e) {
             System.out.println("e = " + e);

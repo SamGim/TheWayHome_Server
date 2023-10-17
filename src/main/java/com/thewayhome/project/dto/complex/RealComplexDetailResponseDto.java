@@ -3,7 +3,6 @@ package com.thewayhome.project.dto.complex;
 import com.thewayhome.project.domain.RealComplex;
 import com.thewayhome.project.dto.image.ComplexImageResponseDto;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,8 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RealComplexResponseDto {
+public class RealComplexDetailResponseDto {
     private Long id;
+    private String name;
     private String tradeTypeName;
     private String dealOrWarrantPrc;
     private String maintenanceCost;
@@ -34,10 +34,11 @@ public class RealComplexResponseDto {
     private Double latitude;
     private Double longitude;
 
-    public static RealComplexResponseDto fromEntity(RealComplex complex, ComplexImageResponseDto mainImage, List<ComplexImageResponseDto> roomImages) {
+    public static RealComplexDetailResponseDto fromEntity(RealComplex complex, ComplexImageResponseDto mainImage, List<ComplexImageResponseDto> roomImages) {
 
-        return RealComplexResponseDto.builder()
+        return RealComplexDetailResponseDto.builder()
                 .id(complex.getId())
+                .name(complex.getName())
                 .tradeTypeName(complex.getTradeTypeName())
                 .dealOrWarrantPrc(complex.getDealOrWarrantPrc())
                 .maintenanceCost(complex.getMaintenanceCost())
