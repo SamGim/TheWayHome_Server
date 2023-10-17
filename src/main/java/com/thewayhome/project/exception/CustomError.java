@@ -15,6 +15,7 @@ public enum CustomError {
     HTTP_PROTOCOL_ERROR(500, "유효하지 않은 HTTP 메소드입니다."),
     MALFORMED_URL_ERROR(500, "유효하지 않은 URL 입니다."),
     JSON_PROCESSING_ERROR(500, "JSON 파싱 에러"),
+    IMAGE_UPLOAD_ERROR(500, "이미지 업로드 실패"),
     JAVA_IO_ERROR(500, "IOException");
 
 
