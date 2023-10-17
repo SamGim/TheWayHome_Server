@@ -12,7 +12,7 @@ import lombok.*;
 @Table(name = "company")
 public class Company {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "company_id")
     private Long companyId;
     @Column(name = "company_name")
