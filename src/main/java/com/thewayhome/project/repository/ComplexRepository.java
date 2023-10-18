@@ -24,14 +24,6 @@ public interface ComplexRepository extends JpaRepository<Complex, Long> {
             @Param("ne_lat") double neLat
     );
 
-    @Query(value = "select * from complex where longitude between :sw_lng and :ne_lng and latitude between :sw_lat and :ne_lat",
-            nativeQuery = true)
-    List<Complex> findWithinMap(@Param("sw_lng") double swLng,
-                                @Param("sw_lat") double swLat,
-                                @Param("ne_lng") double neLng,
-                                @Param("ne_lat") double neLat
-    );
-
     @Override
     void flush();
 
