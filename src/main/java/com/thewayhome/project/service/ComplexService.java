@@ -38,21 +38,55 @@ public class ComplexService {
         this.complexImageRepository = complexImageRepository;
     }
 
-    public List<ComplexSimpleRequestDto> getComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat) {
+    public List<ComplexSimpleResponseDto> getComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat) {
         List<Complex> withinMap = complexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
 
         return withinMap.stream()
-                .map(ComplexSimpleRequestDto::fromEntity)
+                .map(ComplexSimpleResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
-    public ComplexCardRequestDto getComplexCardInfo(Long id){
-        Complex complex = complexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
-        return ComplexCardRequestDto.fromEntity(complex);
+    // 2
+    public List<RealComplexSimpleResponseDto> getRealComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat) {
+        List<RealComplex> withinMap = realComplexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
+
+        return withinMap.stream()
+                .map(RealComplexSimpleResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
-    public ComplexDetailRequestDto getComplexDetailInfo(Long id){
+
+
+    public ComplexCardResponseDto getComplexCardInfo(Long id){
         Complex complex = complexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
-        return ComplexDetailRequestDto.fromEntity(complex);
+        return ComplexCardResponseDto.fromEntity(complex);
+    }
+
+    // 2
+    public RealComplexCardResponseDto getRealComplexCardInfo(Long id){
+        RealComplex complex = realComplexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
+        return RealComplexCardResponseDto.fromEntity(complex);
+    }
+
+    public ComplexDetailResponseDto getComplexDetailInfo(Long id){
+        Complex complex = complexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
+        return ComplexDetailResponseDto.fromEntity(complex);
+    }
+
+    // 2
+    public RealComplexDetailResponseDto getRealComplexDetailInfo(Long id){
+        RealComplex complex = realComplexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
+        List<ComplexImage> images = complexImageRepository.findByRealComplex(complex);
+        ComplexImageResponseDto mainImage = null;
+        List<ComplexImageResponseDto> roomImages = new ArrayList<>();
+        for(ComplexImage image : images){
+            if (image.getIsMain()){
+                mainImage = ComplexImageResponseDto.fromEntity(image);
+            }
+            else{
+                roomImages.add(ComplexImageResponseDto.fromEntity(image));
+            }
+        }
+        return RealComplexDetailResponseDto.fromEntity(complex, mainImage, roomImages);
     }
 
     @Transactional
@@ -72,12 +106,21 @@ public class ComplexService {
         }
     }
 
-    public List<ComplexSimpleRequestDto2> getComplexesInBoundingBox2(double swLng, double swLat, double neLng, double neLat, String coPoint) {
+    public List<ComplexSimpleResponseDto2> getComplexesInBoundingBox2(double swLng, double swLat, double neLng, double neLat, String coPoint) {
         List<Complex> withinMap = complexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
         return withinMap.stream()
-                .map(x -> ComplexSimpleRequestDto2.fromEntity(x, naverMapsService.getComplexToCompanyTime(x.getLongitude() + "," + x.getLatitude(), coPoint)))
+                .map(x -> ComplexSimpleResponseDto2.fromEntity(x, naverMapsService.getComplexToCompanyTime(x.getLongitude() + "," + x.getLatitude(), coPoint)))
                 .collect(Collectors.toList());
     }
+
+    // 2
+    public List<RealComplexSimpleResponseDto2> getRealComplexesInBoundingBox2(double swLng, double swLat, double neLng, double neLat, String coPoint) {
+        List<RealComplex> withinMap = realComplexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
+        return withinMap.stream()
+                .map(x -> RealComplexSimpleResponseDto2.fromEntity(x, naverMapsService.getComplexToCompanyTime(x.getLongitude() + "," + x.getLatitude(), coPoint)))
+                .collect(Collectors.toList());
+    }
+
 
     public Complex registerComplex(ComplexRegisterRequestDto complexDto) {
         try{
@@ -103,6 +146,7 @@ public class ComplexService {
                 ComplexImage mainImage = ComplexImage.builder()
                         .realComplex(complex)
                         .url(mainImageUrl)
+                        .isMain(true)
                         .build();
                 complexImageRepository.save(mainImage);
                 complex.setMainImageUrl(mainImageUrl);
@@ -118,6 +162,7 @@ public class ComplexService {
                     ComplexImage roomImage = ComplexImage.builder()
                             .realComplex(complex)
                             .url(roomImageUrl)
+                            .isMain(false)
                             .build();
                     complexImageRepository.save(roomImage);
                     roomImages.add(roomImage);
