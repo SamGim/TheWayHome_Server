@@ -1,16 +1,14 @@
 package com.thewayhome.project.dto.complex;
 
 import com.thewayhome.project.domain.Complex;
-import jakarta.persistence.Column;
 import lombok.*;
-import org.locationtech.jts.geom.Point;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ComplexDetailRequestDto {
+public class ComplexDetailResponseDto {
     private Long articleNo;
     private String articleName;
     private String dealOrWarrantPrc;
@@ -28,8 +26,8 @@ public class ComplexDetailRequestDto {
     private Long complexNo;
     private String complexName;
 
-    public static ComplexDetailRequestDto fromEntity(Complex complex){
-        return ComplexDetailRequestDto.builder()
+    public static ComplexDetailResponseDto fromEntity(Complex complex){
+        return ComplexDetailResponseDto.builder()
                 .articleNo(complex.getArticleNo())
                 .articleName(complex.getArticleName())
                 .dealOrWarrantPrc(complex.getDealOrWarrantPrc())
