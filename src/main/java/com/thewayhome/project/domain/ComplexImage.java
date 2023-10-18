@@ -23,4 +23,7 @@ public class ComplexImage {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "is_main")
+    private Boolean isMain;
+
 }
