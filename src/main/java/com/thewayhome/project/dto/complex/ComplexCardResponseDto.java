@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ComplexCardRequestDto {
+public class ComplexCardResponseDto {
     private Long articleNo;
     private String articleName;
     private String dealOrWarrantPrc;
@@ -20,8 +20,8 @@ public class ComplexCardRequestDto {
     private String districtName;
     private String cortarName;
 
-    public static ComplexCardRequestDto fromEntity(Complex complex){
-        return ComplexCardRequestDto.builder()
+    public static ComplexCardResponseDto fromEntity(Complex complex){
+        return ComplexCardResponseDto.builder()
                 .articleNo(complex.getArticleNo())
                 .articleName(complex.getArticleName())
                 .dealOrWarrantPrc(complex.getDealOrWarrantPrc())
