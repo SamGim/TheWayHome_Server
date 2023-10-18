@@ -1,6 +1,7 @@
 package com.thewayhome.project.repository;
 
 import com.thewayhome.project.domain.ComplexImage;
+import com.thewayhome.project.domain.RealComplex;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,9 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public interface ComplexImageRepository extends JpaRepository<ComplexImage, Long> {
+
+    List<ComplexImage> findByRealComplex(RealComplex complex);
+
     @Override
     void flush();
 
