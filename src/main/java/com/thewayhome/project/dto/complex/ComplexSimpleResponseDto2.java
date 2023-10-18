@@ -1,8 +1,6 @@
 package com.thewayhome.project.dto.complex;
 
-import com.thewayhome.project.controller.ComplexController;
 import com.thewayhome.project.domain.Complex;
-import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter
@@ -10,15 +8,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ComplexSimpleRequestDto2 {
+public class ComplexSimpleResponseDto2 {
     private Long articleNo;
     private String dealOrWarrantPrc;
     private Double latitude;
     private Double longitude;
     private Integer duration;
 
-    public static ComplexSimpleRequestDto2 fromEntity(Complex complex, Integer duration){
-        return ComplexSimpleRequestDto2.builder()
+    public static ComplexSimpleResponseDto2 fromEntity(Complex complex, Integer duration){
+        return ComplexSimpleResponseDto2.builder()
                 .articleNo(complex.getArticleNo())
                 .dealOrWarrantPrc(complex.getDealOrWarrantPrc())
                 .latitude(complex.getLatitude())
