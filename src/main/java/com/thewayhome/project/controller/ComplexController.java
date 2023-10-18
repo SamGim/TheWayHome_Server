@@ -1,6 +1,5 @@
 package com.thewayhome.project.controller;
 
-import com.thewayhome.project.domain.RealComplex;
 import com.thewayhome.project.dto.complex.*;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
@@ -27,12 +26,22 @@ public class ComplexController {
 
     // 매물 목록 쿼리
     @GetMapping("/list/inquery")
-    public ResponseEntity<List<ComplexSimpleRequestDto>> getComplexesWithinBoundingBox(
+    public ResponseEntity<List<ComplexSimpleResponseDto>> getComplexesWithinBoundingBox(
             @RequestParam(name = "sw_lng") double swLng,
             @RequestParam(name = "sw_lat") double swLat,
             @RequestParam(name = "ne_lng") double neLng,
             @RequestParam(name = "ne_lat") double neLat) {
         return ResponseEntity.ok(complexService.getComplexesInBoundingBox(swLng, swLat, neLng, neLat));
+    }
+
+    // 2
+    @GetMapping("/real/list/inquery")
+    public ResponseEntity<List<RealComplexSimpleResponseDto>> getRealComplexesWithinBoundingBox(
+            @RequestParam(name = "sw_lng") double swLng,
+            @RequestParam(name = "sw_lat") double swLat,
+            @RequestParam(name = "ne_lng") double neLng,
+            @RequestParam(name = "ne_lat") double neLat) {
+        return ResponseEntity.ok(complexService.getRealComplexesInBoundingBox(swLng, swLat, neLng, neLat));
     }
 
     // 단일 매물 detail 또는 card info 조회
@@ -44,6 +53,18 @@ public class ComplexController {
             return ResponseEntity.ok(complexService.getComplexDetailInfo(complexId));
         } else {
             return ResponseEntity.ok(complexService.getComplexCardInfo(complexId));
+        }
+    }
+
+    // 2
+    @GetMapping("/real/info/inquery/{complexId}")
+    public ResponseEntity<Object> getRealComplexById(
+            @PathVariable long complexId,
+            @RequestParam Boolean detail) {
+        if (detail){
+            return ResponseEntity.ok(complexService.getRealComplexDetailInfo(complexId));
+        } else {
+            return ResponseEntity.ok(complexService.getRealComplexCardInfo(complexId));
         }
     }
 
@@ -59,7 +80,7 @@ public class ComplexController {
     }
 
     @GetMapping("/list/inquery2")
-    public ResponseEntity<List<ComplexSimpleRequestDto2>> getComplexesWithinBoundingBox2(
+    public ResponseEntity<List<ComplexSimpleResponseDto2>> getComplexesWithinBoundingBox2(
             @RequestParam(name = "sw_lng") double swLng,
             @RequestParam(name = "sw_lat") double swLat,
             @RequestParam(name = "ne_lng") double neLng,
@@ -70,12 +91,25 @@ public class ComplexController {
         return ResponseEntity.ok(complexService.getComplexesInBoundingBox2(swLng, swLat, neLng, neLat, coPoint));
     }
 
+    // 2
+    @GetMapping("/real/list/inquery2")
+    public ResponseEntity<List<RealComplexSimpleResponseDto2>> getRealComplexesWithinBoundingBox2(
+            @RequestParam(name = "sw_lng") double swLng,
+            @RequestParam(name = "sw_lat") double swLat,
+            @RequestParam(name = "ne_lng") double neLng,
+            @RequestParam(name = "ne_lat") double neLat,
+            @RequestParam(name = "co_lng") double coLng,
+            @RequestParam(name = "co_lat") double coLat) {
+        String coPoint = coLng + "," + coLat;
+        return ResponseEntity.ok(complexService.getRealComplexesInBoundingBox2(swLng, swLat, neLng, neLat, coPoint));
+    }
+    
     @PostMapping
     public ResponseEntity<Object> registerComplex(@RequestBody ComplexRegisterRequestDto complexDto){
         return ResponseEntity.ok(complexService.registerComplex(complexDto));
     }
     @PostMapping("/upload")
-    public ResponseEntity<RealComplexResponseDto> registerRealComplex(
+    public ResponseEntity<RealComplexDetailResponseDto> registerRealComplex(
             @RequestPart RealComplexRegisterRequestDto complexDto,
             @RequestPart MultipartFile mainImage,
             @RequestPart List<MultipartFile> roomImages
