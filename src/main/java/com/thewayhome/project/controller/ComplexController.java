@@ -7,6 +7,7 @@ import com.thewayhome.project.service.ComplexService;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -103,12 +104,12 @@ public class ComplexController {
         String coPoint = coLng + "," + coLat;
         return ResponseEntity.ok(complexService.getRealComplexesInBoundingBox2(swLng, swLat, neLng, neLat, coPoint));
     }
-    
+
     @PostMapping
     public ResponseEntity<Object> registerComplex(@RequestBody ComplexRegisterRequestDto complexDto){
         return ResponseEntity.ok(complexService.registerComplex(complexDto));
     }
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<RealComplexDetailResponseDto> registerRealComplex(
             @RequestPart RealComplexRegisterRequestDto complexDto,
             @RequestPart MultipartFile mainImage,
