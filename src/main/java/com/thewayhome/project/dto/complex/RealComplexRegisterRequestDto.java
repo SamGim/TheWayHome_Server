@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class RealComplexRegisterRequestDto {
-    private Long id;
     private String name;
     private String tradeTypeName;
     private String dealOrWarrantPrc;
