@@ -98,6 +98,7 @@ public class ComplexController {
 
     // 2
     @GetMapping("/real/list/inquery2")
+    @Operation(summary = "영역 내 매물 조회", description = "영역 내 매물과 직장까지 소요시간 조회")
     public ResponseEntity<List<RealComplexSimpleResponseDto2>> getRealComplexesWithinBoundingBox2(
             @Parameter(description = "지도 남서쪽 longitude", required = true) @RequestParam(name = "sw_lng") double swLng,
             @Parameter(description = "지도 남서쪽 latitude", required = true) @RequestParam(name = "sw_lat") double swLat,
