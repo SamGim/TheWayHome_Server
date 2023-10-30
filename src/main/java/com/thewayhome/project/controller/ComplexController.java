@@ -123,4 +123,13 @@ public class ComplexController {
     ) {
         return ResponseEntity.ok(complexService.registerRealComplex(complexDto, mainImage, roomImages));
     }
+
+    @DeleteMapping(value = "/{complexId}")
+    @Operation(summary = "매물 삭제", description = "id로 특정 매물 삭제")
+    public ResponseEntity<String> deleteComplex(
+            @Parameter(description = "매물 ID", required = true) @PathVariable long complexId
+    ){
+        complexService.deleteComplex(complexId);
+        return ResponseEntity.ok("deleted");
+    }
 }
