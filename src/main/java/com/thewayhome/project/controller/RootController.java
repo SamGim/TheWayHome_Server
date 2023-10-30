@@ -5,6 +5,7 @@ import com.thewayhome.project.domain.Complex;
 import com.thewayhome.project.exception.CustomException;
 import com.thewayhome.project.service.ComplexService;
 import com.thewayhome.project.service.ImageService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class RootController {
     }
 
     @GetMapping("/heartbeat")
+    @Operation(summary = "서버 생사", description = "서버 생사 확인")
     public ResponseEntity<Object> isServerAlive(){
 //        throw new CustomException(TEST_ERROR);
         return ResponseEntity.ok("connected");
