@@ -4,6 +4,8 @@ import com.thewayhome.project.dto.complex.*;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
 import com.thewayhome.project.service.ComplexService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +39,12 @@ public class ComplexController {
 
     // 2
     @GetMapping("/real/list/inquery")
+    @Operation(summary = "영역 내 매물 조회", description = "영역내의 매물을 조회합니다.")
     public ResponseEntity<List<RealComplexSimpleResponseDto>> getRealComplexesWithinBoundingBox(
-            @RequestParam(name = "sw_lng") double swLng,
-            @RequestParam(name = "sw_lat") double swLat,
-            @RequestParam(name = "ne_lng") double neLng,
-            @RequestParam(name = "ne_lat") double neLat) {
+            @Parameter(description = "지도 남서쪽 longitude", required = true) @RequestParam(name = "sw_lng") double swLng,
+            @Parameter(description = "지도 남서쪽 latitude", required = true) @RequestParam(name = "sw_lat") double swLat,
+            @Parameter(description = "지도 북동쪽 longitude", required = true) @RequestParam(name = "ne_lng") double neLng,
+            @Parameter(description = "지도 북동쪽 latitude", required = true) @RequestParam(name = "ne_lat") double neLat) {
         return ResponseEntity.ok(complexService.getRealComplexesInBoundingBox(swLng, swLat, neLng, neLat));
     }
 
@@ -59,9 +62,10 @@ public class ComplexController {
 
     // 2
     @GetMapping("/real/info/inquery/{complexId}")
+    @Operation(summary = "매물 조회", description = "id로 특정 매물 조회")
     public ResponseEntity<Object> getRealComplexById(
-            @PathVariable long complexId,
-            @RequestParam Boolean detail) {
+            @Parameter(description = "매물 ID", required = true) @PathVariable long complexId,
+            @Parameter(description = "true일 경우 자세정보, false일 경우 카드 정보", required = true)  @RequestParam Boolean detail) {
         if (detail){
             return ResponseEntity.ok(complexService.getRealComplexDetailInfo(complexId));
         } else {
@@ -95,12 +99,12 @@ public class ComplexController {
     // 2
     @GetMapping("/real/list/inquery2")
     public ResponseEntity<List<RealComplexSimpleResponseDto2>> getRealComplexesWithinBoundingBox2(
-            @RequestParam(name = "sw_lng") double swLng,
-            @RequestParam(name = "sw_lat") double swLat,
-            @RequestParam(name = "ne_lng") double neLng,
-            @RequestParam(name = "ne_lat") double neLat,
-            @RequestParam(name = "co_lng") double coLng,
-            @RequestParam(name = "co_lat") double coLat) {
+            @Parameter(description = "지도 남서쪽 longitude", required = true) @RequestParam(name = "sw_lng") double swLng,
+            @Parameter(description = "지도 남서쪽 latitude", required = true) @RequestParam(name = "sw_lat") double swLat,
+            @Parameter(description = "지도 북동쪽 longitude", required = true) @RequestParam(name = "ne_lng") double neLng,
+            @Parameter(description = "지도 북동쪽 latitude", required = true) @RequestParam(name = "ne_lat") double neLat,
+            @Parameter(description = "직장 longitude", required = true) @RequestParam(name = "co_lng") double coLng,
+            @Parameter(description = "직장 latitude", required = true) @RequestParam(name = "co_lat") double coLat) {
         String coPoint = coLng + "," + coLat;
         return ResponseEntity.ok(complexService.getRealComplexesInBoundingBox2(swLng, swLat, neLng, neLat, coPoint));
     }
@@ -110,6 +114,7 @@ public class ComplexController {
         return ResponseEntity.ok(complexService.registerComplex(complexDto));
     }
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "매물 등록", description = "매물 등록")
     public ResponseEntity<RealComplexDetailResponseDto> registerRealComplex(
             @RequestPart RealComplexRegisterRequestDto complexDto,
             @RequestPart MultipartFile mainImage,
