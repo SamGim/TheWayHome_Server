@@ -22,7 +22,7 @@ services:
     networks:
       - wayhome-net
     volumes:
-      - \Users\jykim\TheWayHome_Server\src\main\resources\static\images:/app/src/main/resources/static/images
+      - /c/Users/jykim/TheWayHome_Server/src/main/resources/static/images:/app/src/main/resources/static/images
 
   db:
     image: mysql:8.0  # MySQL 이미지 이름과 태그
