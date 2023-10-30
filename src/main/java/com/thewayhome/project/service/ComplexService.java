@@ -181,4 +181,12 @@ public class ComplexService {
             throw new CustomException(CustomError.DB_SAVE_ERROR);
         }
     }
+
+    public void deleteComplex(long complexId) {
+        try{
+            complexRepository.deleteById(complexId);
+        }catch (Exception e){
+            throw new CustomException(CustomError.DB_DELETE_ERROR);
+        }
+    }
 }
