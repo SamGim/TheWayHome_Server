@@ -11,9 +11,10 @@ import lombok.*;
 @Builder
 public class RealComplexSimpleResponseDto2 {
     private Long id;
-    private String name;
     private String tradeTypeName;
-    private String dealOrWarrantPrc;
+    private String name;
+    private String dealPrc;
+    private String warrantPrc;
     private Double latitude;
     private Double longitude;
     private Integer duration;
@@ -23,7 +24,8 @@ public class RealComplexSimpleResponseDto2 {
                 .id(complex.getId())
                 .name(complex.getName())
                 .tradeTypeName(complex.getTradeTypeName())
-                .dealOrWarrantPrc(complex.getDealOrWarrantPrc())
+                .dealPrc(complex.getDealPrc())
+                .warrantPrc(complex.getWarrantPrc())
                 .latitude(complex.getLatitude())
                 .longitude(complex.getLongitude())
                 .duration(duration)
