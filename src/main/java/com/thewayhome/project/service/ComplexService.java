@@ -1,15 +1,12 @@
 package com.thewayhome.project.service;
 
-import com.thewayhome.project.domain.Complex;
-import com.thewayhome.project.domain.ComplexImage;
-import com.thewayhome.project.domain.RealComplex;
+import com.thewayhome.project.domain.*;
 import com.thewayhome.project.dto.complex.*;
+import com.thewayhome.project.dto.complexEtc.CoolingFacilityDto;
 import com.thewayhome.project.dto.image.ComplexImageResponseDto;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
-import com.thewayhome.project.repository.ComplexImageRepository;
-import com.thewayhome.project.repository.ComplexRepository;
-import com.thewayhome.project.repository.RealComplexRepository;
+import com.thewayhome.project.repository.*;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,13 +27,23 @@ public class ComplexService {
     private final ImageService imageService;
     private final RealComplexRepository realComplexRepository;
     private final ComplexImageRepository complexImageRepository;
+    private final SecurityFacilityRepository securityFacilityRepository;
+    private final EtcFacilityRepository etcFacilityRepository;
+    private final CoolingFacilityRepository coolingFacilityRepository;
+    private final MaintenanceCostIncludingsRepository maintenanceCostIncludingsRepository;
+    private final LivingFacilityRepository livingFacilityRepository;
     @Autowired
-    public ComplexService(ComplexRepository complexRepository, NaverMapsService naverMapsService, ImageService imageService, RealComplexRepository realComplexRepository, ComplexImageRepository complexImageRepository) {
+    public ComplexService(ComplexRepository complexRepository, NaverMapsService naverMapsService, ImageService imageService, RealComplexRepository realComplexRepository, ComplexImageRepository complexImageRepository, SecurityFacilityRepository securityFacilityRepository, EtcFacilityRepository etcFacilityRepository, CoolingFacilityRepository coolingFacilityRepository, MaintenanceCostIncludingsRepository maintenanceCostIncludingsRepository, LivingFacilityRepository livingFacilityRepository) {
         this.complexRepository = complexRepository;
         this.naverMapsService = naverMapsService;
         this.imageService = imageService;
         this.realComplexRepository = realComplexRepository;
         this.complexImageRepository = complexImageRepository;
+        this.securityFacilityRepository = securityFacilityRepository;
+        this.etcFacilityRepository = etcFacilityRepository;
+        this.coolingFacilityRepository = coolingFacilityRepository;
+        this.maintenanceCostIncludingsRepository = maintenanceCostIncludingsRepository;
+        this.livingFacilityRepository = livingFacilityRepository;
     }
 
     public List<ComplexSimpleResponseDto> getComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat) {
@@ -64,7 +72,7 @@ public class ComplexService {
     // 2
     public RealComplexCardResponseDto getRealComplexCardInfo(Long id){
         RealComplex complex = realComplexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
-        return RealComplexCardResponseDto.fromEntity(complex);
+        return RealComplexCardResponseDto.fromEntity(complex, 1800000);
     }
 
     public ComplexDetailResponseDto getComplexDetailInfo(Long id){
@@ -169,6 +177,48 @@ public class ComplexService {
                     roomImagesDto.add(ComplexImageResponseDto.fromEntity(roomImage));
                 }
             }
+
+            // CoolingFacility 저장
+            if (complexDto.getCoolingFacility() != null) {
+                CoolingFacility coolingFacility = complexDto.getCoolingFacility().toEntity();
+                coolingFacilityRepository.save(coolingFacility);
+                complex.setCoolingFacility(coolingFacility);
+            }
+
+            // SecurityFacility 저장
+            if (complexDto.getSecurityFacility() != null) {
+                SecurityFacility securityFacility = complexDto.getSecurityFacility().toEntity();
+                securityFacilityRepository.save(securityFacility);
+                complex.setSecurityFacility(securityFacility);
+            }
+
+            // EtcFacility 저장
+            if (complexDto.getEtcFacility() != null) {
+                EtcFacility etcFacility = complexDto.getEtcFacility().toEntity();
+                etcFacilityRepository.save(etcFacility);
+                complex.setEtcFacility(etcFacility);
+            }
+
+            // LivingFacility 저장
+            if (complexDto.getLivingFacility() != null) {
+                LivingFacility livingFacility = complexDto.getLivingFacility().toEntity();
+                livingFacilityRepository.save(livingFacility);
+                complex.setLivingFacility(livingFacility);
+            }
+
+            // MaintenanceCostIncludings 저장
+            if (complexDto.getMaintenanceCostIncludings() != null) {
+                MaintenanceCostIncludings maintenanceCostIncludings = complexDto.getMaintenanceCostIncludings().toEntity();
+                maintenanceCostIncludingsRepository.save(maintenanceCostIncludings);
+                complex.setMaintenanceCostIncludings(maintenanceCostIncludings);
+            }
+
+            // baseEntity 저장
+            complex.setCreatedAt(LocalDateTime.now());
+            complex.setUpdatedAt(LocalDateTime.now());
+            complex.setCreatedBy("admin");
+            complex.setUpdatedBy("admin");
+
             complex.setRoomImages(roomImages);
             realComplexRepository.save(complex);
             return RealComplexDetailResponseDto.fromEntity(complex, mImageDto, roomImagesDto);
