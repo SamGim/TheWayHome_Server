@@ -14,52 +14,93 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "real_complex")
-public class RealComplex {
+public class RealComplex extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
     // 매물 이름
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     // 거래유형(전세, 월세, 매매)
-    @Column(name = "trade_type_name")
+    @Column(name = "trade_type_name", nullable = false)
     private String tradeTypeName;
 
-    // 임대료 또는 보증금(단위: 만원, ex: "1억 2,000", "23억 200", 1,500)
-    @Column(name = "deal_or_warrant_prc")
-    private String dealOrWarrantPrc;
+    // 주소
+    @Column(name = "address", nullable = false)
+    private String address;
 
-    // 관리비(단위: 만원)
-    @Column(name = "maintenance_fee")
-    private String maintenanceCost;
-
-    // 관리비 포함내역(전기세, 가스, 인터넷, 수도, TV)
-    @Column(name = "maintenance_fee_includings")
-    private String maintenanceCostIncludings;
-
-    // 구조(오픈형 원룸, 분리형 원룸, 복층형 원룸, 투룸, 쓰리룸, 포룸+)
-    @Column(name = "structure")
-    private String structure;
+    // 상세주소
+    @Column(name = "detail_address", nullable = false)
+    private String detailAddress;
 
     // 공급면적(단위 m^2)
-    @Column(name = "supply_area")
+    @Column(name = "supply_area", nullable = false)
     private String supplyArea;
 
     // 전용면적(단위 m^2)
-    @Column(name = "dedicated_area")
+    @Column(name = "dedicated_area", nullable = false)
     private String dedicatedArea;
 
+    // 구조(오픈형 원룸, 분리형 원룸, 복층형 원룸, 투룸, 쓰리룸, 포룸+)
+    @Column(name = "structure", nullable = false)
+    private String structure;
+
+    // 임대료
+    @Column(name = "deal_prc", nullable = false)
+    private String dealPrc;
+
+    // 보증금
+    @Column(name = "warrant_prc", nullable = false)
+    private String warrantPrc;
+
+    // 관리비(단위: 만원)
+    @Column(name = "maintenance_fee", nullable = false)
+    private String maintenanceCost;
+
+    // 관리비 포함내역(전기세, 가스, 인터넷, 수도, TV)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "maintenance_cost_includings_id", nullable = false)
+    private MaintenanceCostIncludings maintenanceCostIncludings;
+
+    // 입주가능일
+    @Column(name = "available_date", nullable = false)
+    private String availableDate;
+
+    // 입주협가능여부
+    @Column(name = "available_date_negotiable", nullable = false)
+    private Boolean availableDateNegotiable;
+
     // 전체층
-    @Column(name = "whole_floor")
+    @Column(name = "whole_floor", nullable = false)
     private Integer wholeFloor;
 
     // 해당층
-    @Column(name = "floor")
+    @Column(name = "floor", nullable = false)
     private Integer floor;
 
+    // 대표사진
+    @Column(name = "main_image_url", nullable = true)
+    private String mainImageUrl;
+
+    // 방 사진들
+    @OneToMany(mappedBy = "realComplex", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "room_images", nullable = true)
+    private List<ComplexImage> roomImages;
+
+    @Column(name = "latitude", nullable = false)
+    private Double latitude;
+
+    @Column(name = "longitude", nullable = false)
+    private Double longitude;
+
+    @Column(name = "location", columnDefinition="POINT")
+    private Point location;
+
+
+    // 여기서부터 옵션
     // 주차가능
     @Column(name = "parkable")
     private Boolean parkable;
@@ -84,22 +125,36 @@ public class RealComplex {
     @Column(name = "petable")
     private Boolean petable;
 
-    // 대표사진
-    @Column(name = "main_image_url")
-    private String mainImageUrl;
+    // 욕실수
+    @Column(name = "bathroom_count")
+    private Integer bathroomCount;
 
-    // 방 사진들
-    @OneToMany(mappedBy = "realComplex", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "room_images")
-    private List<ComplexImage> roomImages;
+    // 시설정보옵션들
+    // 난방시설
+    @Column(name = "heating_facility")
+    private String heatingFacility;
 
-    @Column(name = "latitude")
-    private Double latitude;
+    // 냉방시설
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cooling_facility_id")
+    private CoolingFacility coolingFacility;
 
-    @Column(name = "longitude")
-    private Double longitude;
+    // 생활시설
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "living_facility_id")
+    private LivingFacility livingFacility;
 
-    @Column(name = "location", columnDefinition="POINT")
-    private Point location;
+    // 보안시설
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "security_facility_id")
+    private SecurityFacility securityFacility;
 
+    // 기타시설
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "etc_facility_id")
+    private EtcFacility etcFacility;
+
+    // 상세설명
+    @Column(name = "description")
+    private String description;
 }
