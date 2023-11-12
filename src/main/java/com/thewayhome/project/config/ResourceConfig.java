@@ -10,6 +10,7 @@ public class ResourceConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/image/**")
                 .addResourceLocations("file:/app/src/main/resources/static/images");
+//        .addResourceLocations("file:./src/main/resources/static/images");
 //        registry.addResourceHandler("/carzenResource/**")
 //                .addResourceLocations("file:/Users/jykim/Desktop/carzenResource/");
     }
