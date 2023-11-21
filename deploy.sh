@@ -4,6 +4,7 @@ ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -o StrictHostKeyC
 @echo off
 SET CONTAINER_NAME=thewayhome
 SET VERSION=0.0.1
+SET SERVER_NAME=wayhome
 
 IF NOT EXIST TheWayHome_Server (
     git clone https://github.com/SamGim/TheWayHome_Server
@@ -24,11 +25,11 @@ IF DEFINED ContainerId (
 
     IF DEFINED RunningContainerId (
         echo "Container is running -> stopping it..."
-        docker-compose down --rmi local
+        docker rm -f wayhome
     )
 )
 
-docker-compose up -d
+docker run -d --name wayhome -p 80:8080 -v /c/Users/jykim/TheWayHome_Server/src/main/resources/static/images:/app/src/main/resources/static/images %CONTAINER_NAME%:%VERSION%
 ENDSSH
 
 # 원격 서버로부터의 반환 코드 확인
