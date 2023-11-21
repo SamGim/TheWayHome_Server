@@ -29,7 +29,7 @@ IF DEFINED ContainerId (
     )
 )
 
-docker run -d --name wayhome -p 80:8080 -v /c/Users/jykim/TheWayHome_Server/src/main/resources/static/images:/app/src/main/resources/static/images %CONTAINER_NAME%:%VERSION%
+docker run -d --network thewayhome_server_wayhome-net --name wayhome -p 80:8080 -v /c/Users/jykim/TheWayHome_Server/src/main/resources/static/images:/app/src/main/resources/static/images %CONTAINER_NAME%:%VERSION%
 ENDSSH
 
 # 원격 서버로부터의 반환 코드 확인
