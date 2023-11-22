@@ -144,7 +144,7 @@ public class RealComplex extends BaseEntity {
     // 시설정보옵션들
     // 난방시설
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "heating_facility_id")
+    @JoinColumn(name = "heating_facility_id")
     private HeatingFacility heatingFacility;
 
     // 냉방시설
