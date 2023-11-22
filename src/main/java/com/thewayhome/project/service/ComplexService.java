@@ -2,7 +2,6 @@ package com.thewayhome.project.service;
 
 import com.thewayhome.project.domain.*;
 import com.thewayhome.project.dto.complex.*;
-import com.thewayhome.project.dto.complexEtc.CoolingFacilityDto;
 import com.thewayhome.project.dto.image.ComplexImageResponseDto;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
@@ -32,8 +31,9 @@ public class ComplexService {
     private final CoolingFacilityRepository coolingFacilityRepository;
     private final MaintenanceCostIncludingsRepository maintenanceCostIncludingsRepository;
     private final LivingFacilityRepository livingFacilityRepository;
+    private final HeatingFacilityRepository heatingFacilityRepository;
     @Autowired
-    public ComplexService(ComplexRepository complexRepository, NaverMapsService naverMapsService, ImageService imageService, RealComplexRepository realComplexRepository, ComplexImageRepository complexImageRepository, SecurityFacilityRepository securityFacilityRepository, EtcFacilityRepository etcFacilityRepository, CoolingFacilityRepository coolingFacilityRepository, MaintenanceCostIncludingsRepository maintenanceCostIncludingsRepository, LivingFacilityRepository livingFacilityRepository) {
+    public ComplexService(ComplexRepository complexRepository, NaverMapsService naverMapsService, ImageService imageService, RealComplexRepository realComplexRepository, ComplexImageRepository complexImageRepository, SecurityFacilityRepository securityFacilityRepository, EtcFacilityRepository etcFacilityRepository, CoolingFacilityRepository coolingFacilityRepository, MaintenanceCostIncludingsRepository maintenanceCostIncludingsRepository, LivingFacilityRepository livingFacilityRepository, HeatingFacilityRepository heatingFacilityRepository) {
         this.complexRepository = complexRepository;
         this.naverMapsService = naverMapsService;
         this.imageService = imageService;
@@ -44,6 +44,7 @@ public class ComplexService {
         this.coolingFacilityRepository = coolingFacilityRepository;
         this.maintenanceCostIncludingsRepository = maintenanceCostIncludingsRepository;
         this.livingFacilityRepository = livingFacilityRepository;
+        this.heatingFacilityRepository = heatingFacilityRepository;
     }
 
     public List<ComplexSimpleResponseDto> getComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat) {
@@ -211,6 +212,13 @@ public class ComplexService {
                 MaintenanceCostIncludings maintenanceCostIncludings = complexDto.getMaintenanceCostIncludings().toEntity();
                 maintenanceCostIncludingsRepository.save(maintenanceCostIncludings);
                 complex.setMaintenanceCostIncludings(maintenanceCostIncludings);
+            }
+
+            // heatingFacility 저장
+            if (complexDto.getHeatingFacility() != null) {
+                HeatingFacility heatingFacility = complexDto.getHeatingFacility().toEntity();
+                heatingFacilityRepository.save(heatingFacility);
+                complex.setHeatingFacility(heatingFacility);
             }
 
             // baseEntity 저장
