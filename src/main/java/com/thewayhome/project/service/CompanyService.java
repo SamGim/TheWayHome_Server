@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,10 @@ public class CompanyService {
     public Company registerCompany(CompanyRegisterRequestDto companyDto) {
         // CompanyDTO에서 필요한 데이터를 가져와서 Company 엔티티로 변환
         Company company = companyDto.toEntity();
+        company.setCreatedAt(LocalDateTime.now());
+        company.setUpdatedAt(LocalDateTime.now());
+        company.setCreatedBy("admin");
+        company.setUpdatedBy("admin");
         // 회사 등록
         try{
             return companyRepository.save(company);
