@@ -17,6 +17,7 @@ public class CoolingFacilityDto{
     Boolean ceiling;
     Boolean separation;
     Boolean centralAirConditioning;
+    private Boolean mobile;
 
     public static CoolingFacilityDto fromEntity(CoolingFacility coolingFacility){
         return CoolingFacilityDto.builder()
@@ -26,6 +27,7 @@ public class CoolingFacilityDto{
                 .ceiling(coolingFacility.getCeiling())
                 .separation(coolingFacility.getSeparation())
                 .centralAirConditioning(coolingFacility.getCentralAirConditioning())
+                .mobile(coolingFacility.getMobile())
                 .build();
     }
 
@@ -37,6 +39,7 @@ public class CoolingFacilityDto{
                 .ceiling(this.ceiling)
                 .separation(this.separation)
                 .centralAirConditioning(this.centralAirConditioning)
+                .mobile(this.mobile)
                 .build();
     }
 }
