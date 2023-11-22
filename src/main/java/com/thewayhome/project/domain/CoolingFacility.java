@@ -41,4 +41,7 @@ public class CoolingFacility {
     @Column(name = "central_air_conditioning", columnDefinition = "boolean default false")
     private Boolean centralAirConditioning;
 
+    // 이동형
+    @Column(name = "mobile", columnDefinition = "boolean default false")
+    private Boolean mobile;
 }
