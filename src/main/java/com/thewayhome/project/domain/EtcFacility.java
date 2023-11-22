@@ -25,7 +25,15 @@ public class EtcFacility {
     @Column(name = "unmanned_parcel_box", columnDefinition = "boolean default false")
     private Boolean unmannedParcelBox;
 
-    // 마당
-    @Column(name = "yard", columnDefinition = "boolean default false")
-    private Boolean yard;
+    // 베란다
+    @Column(name = "veranda", columnDefinition = "boolean default false")
+    private Boolean veranda;
+
+    // 테라스
+    @Column(name = "terrace", columnDefinition = "boolean default false")
+    private Boolean terrace;
+
+    // 소화기
+    @Column(name = "fire_extinguisher", columnDefinition = "boolean default false")
+    private Boolean fireExtinguisher;
 }

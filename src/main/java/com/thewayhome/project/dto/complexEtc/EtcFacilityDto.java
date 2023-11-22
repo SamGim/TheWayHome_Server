@@ -12,13 +12,17 @@ import lombok.*;
 public class EtcFacilityDto {
     private Boolean fireAlarm;
     private Boolean unmannedParcelBox;
-    private Boolean yard;
+    private Boolean veranda;
+    private Boolean terrace;
+    private Boolean fireExtinguisher;
 
     public static EtcFacilityDto fromEntity(EtcFacility etcFacilityDto){
         return EtcFacilityDto.builder()
                 .fireAlarm(etcFacilityDto.getFireAlarm())
                 .unmannedParcelBox(etcFacilityDto.getUnmannedParcelBox())
-                .yard(etcFacilityDto.getYard())
+                .veranda(etcFacilityDto.getVeranda())
+                .terrace(etcFacilityDto.getTerrace())
+                .fireExtinguisher(etcFacilityDto.getFireExtinguisher())
                 .build();
     }
 
@@ -26,7 +30,9 @@ public class EtcFacilityDto {
         return EtcFacility.builder()
                 .fireAlarm(this.fireAlarm)
                 .unmannedParcelBox(this.unmannedParcelBox)
-                .yard(this.yard)
+                .veranda(this.veranda)
+                .terrace(this.terrace)
+                .fireExtinguisher(this.fireExtinguisher)
                 .build();
     }
 }
