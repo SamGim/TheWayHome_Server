@@ -61,6 +61,16 @@ public class RealComplexRegisterRequestDto {
     // 해당층
     private Integer floor;
 
+    // 옥탑형
+    private Boolean rooftop;
+
+    // 반지하
+    private Boolean basement;
+
+    // 지하
+    private Boolean underground;
+
+
     private Double latitude;
 
     private Double longitude;
@@ -90,7 +100,7 @@ public class RealComplexRegisterRequestDto {
 
     // 시설정보옵션들
     // 난방시설
-    private String heatingFacility;
+    private HeatingFacilityDto heatingFacility;
 
     // 냉방시설
     private CoolingFacilityDto coolingFacility;
@@ -134,7 +144,6 @@ public class RealComplexRegisterRequestDto {
                 .loan(loan)
                 .petable(petable)
                 .bathroomCount(bathroomCount)
-                .heatingFacility(heatingFacility)
                 .description(description)
                 .location(point)
                 .build();

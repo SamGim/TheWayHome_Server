@@ -81,6 +81,18 @@ public class RealComplex extends BaseEntity {
     @Column(name = "floor", nullable = false)
     private Integer floor;
 
+    // 옥탑형
+    @Column(name = "rooftop", nullable = false)
+    private Boolean rooftop;
+
+    // 반지하
+    @Column(name = "basement", nullable = false)
+    private Boolean basement;
+
+    // 지하
+    @Column(name = "underground", nullable = false)
+    private Boolean underground;
+
     // 대표사진
     @Column(name = "main_image_url", nullable = true)
     private String mainImageUrl;
@@ -131,8 +143,9 @@ public class RealComplex extends BaseEntity {
 
     // 시설정보옵션들
     // 난방시설
-    @Column(name = "heating_facility")
-    private String heatingFacility;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "heating_facility_id")
+    private HeatingFacility heatingFacility;
 
     // 냉방시설
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
