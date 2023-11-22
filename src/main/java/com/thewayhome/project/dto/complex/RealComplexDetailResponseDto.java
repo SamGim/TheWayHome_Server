@@ -97,7 +97,7 @@ public class RealComplexDetailResponseDto {
 
     // 시설정보옵션들
     // 난방시설
-    private String heatingFacility;
+    private HeatingFacilityDto heatingFacility;
 
     // 냉방시설
     private CoolingFacilityDto coolingFacility;
@@ -143,7 +143,7 @@ public class RealComplexDetailResponseDto {
                 .loan(complex.getLoan())
                 .petable(complex.getPetable())
                 .bathroomCount(complex.getBathroomCount())
-                .heatingFacility(complex.getHeatingFacility())
+                .heatingFacility(HeatingFacilityDto.fromEntity(complex.getHeatingFacility()))
                 .coolingFacility(CoolingFacilityDto.fromEntity(complex.getCoolingFacility()))
                 .livingFacility(LivingFacilityDto.fromEntity(complex.getLivingFacility()))
                 .securityFacility(SecurityFacilityDto.fromEntity(complex.getSecurityFacility()))
