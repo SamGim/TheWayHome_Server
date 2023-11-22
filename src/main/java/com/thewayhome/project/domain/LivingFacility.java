@@ -69,4 +69,44 @@ public class LivingFacility {
     // 건조기
     @Column(name = "dryer", columnDefinition = "boolean default false")
     private Boolean dryer;
+
+    // 붙박이장
+    @Column(name = "built_in_closet", columnDefinition = "boolean default false")
+    private Boolean builtInCloset;
+
+    // 소파
+    @Column(name = "sofa", columnDefinition = "boolean default false")
+    private Boolean sofa;
+
+    // 신발장
+    @Column(name = "shoe_closet", columnDefinition = "boolean default false")
+    private Boolean shoeCloset;
+
+    // 샤워부스
+    @Column(name = "shower_booth", columnDefinition = "boolean default false")
+    private Boolean showerBooth;
+
+    // 욕조
+    @Column(name = "bathtub", columnDefinition = "boolean default false")
+    private Boolean bathtub;
+
+    // 비데
+    @Column(name = "bidet", columnDefinition = "boolean default false")
+    private Boolean bidet;
+
+    // 싱크대
+    @Column(name = "sink", columnDefinition = "boolean default false")
+    private Boolean sink;
+
+    // 식기세척기
+    @Column(name = "dishwasher", columnDefinition = "boolean default false")
+    private Boolean dishwasher;
+
+    // 인덕션
+    @Column(name = "induction_stove", columnDefinition = "boolean default false")
+    private Boolean inductionStove;
+
+    // 가스오븐
+    @Column(name = "gas_oven", columnDefinition = "boolean default false")
+    private Boolean gasOven;
 }

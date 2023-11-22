@@ -1,6 +1,7 @@
 package com.thewayhome.project.dto.complexEtc;
 
 import com.thewayhome.project.domain.LivingFacility;
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter
@@ -19,6 +20,15 @@ public class LivingFacilityDto {
     private Boolean bookshelf;
     private Boolean diningTable;
     private Boolean chair;
+    private Boolean sofa;
+    private Boolean shoeCloset;
+    private Boolean showerBooth;
+    private Boolean bathtub;
+    private Boolean bidet;
+    private Boolean sink;
+    private Boolean dishwasher;
+    private Boolean inductionStove;
+    private Boolean gasOven;
 public static LivingFacilityDto fromEntity(LivingFacility livingFacility){
         return LivingFacilityDto.builder()
                 .airConditioner(livingFacility.getAirConditioner())
@@ -31,6 +41,15 @@ public static LivingFacilityDto fromEntity(LivingFacility livingFacility){
                 .bookshelf(livingFacility.getBookshelf())
                 .diningTable(livingFacility.getDiningTable())
                 .chair(livingFacility.getChair())
+                .sofa(livingFacility.getSofa())
+                .shoeCloset(livingFacility.getShoeCloset())
+                .showerBooth(livingFacility.getShowerBooth())
+                .bathtub(livingFacility.getBathtub())
+                .bidet(livingFacility.getBidet())
+                .sink(livingFacility.getSink())
+                .dishwasher(livingFacility.getDishwasher())
+                .inductionStove(livingFacility.getInductionStove())
+                .gasOven(livingFacility.getGasOven())
                 .build();
     }
 
@@ -46,6 +65,15 @@ public static LivingFacilityDto fromEntity(LivingFacility livingFacility){
                 .bookshelf(this.bookshelf)
                 .diningTable(this.diningTable)
                 .chair(this.chair)
+                .sofa(this.sofa)
+                .shoeCloset(this.shoeCloset)
+                .showerBooth(this.showerBooth)
+                .bathtub(this.bathtub)
+                .bidet(this.bidet)
+                .sink(this.sink)
+                .dishwasher(this.dishwasher)
+                .inductionStove(this.inductionStove)
+                .gasOven(this.gasOven)
                 .build();
     }
 }
