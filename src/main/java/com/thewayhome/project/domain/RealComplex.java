@@ -48,11 +48,11 @@ public class RealComplex extends BaseEntity {
     @Column(name = "structure", nullable = false)
     private String structure;
 
-    // 임대료
+    // 임대료(전세가, 월세가, 매매가)
     @Column(name = "deal_prc", nullable = false)
     private String dealPrc;
 
-    // 보증금
+    // 월세 보증금
     @Column(name = "warrant_prc", nullable = false)
     private String warrantPrc;
 
