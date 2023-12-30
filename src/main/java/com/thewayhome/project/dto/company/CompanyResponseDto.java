@@ -1,8 +1,6 @@
 package com.thewayhome.project.dto.company;
 
 import com.thewayhome.project.domain.Company;
-import com.thewayhome.project.domain.Complex;
-import com.thewayhome.project.dto.complex.ComplexSimpleResponseDto;
 import lombok.*;
 
 @Getter
