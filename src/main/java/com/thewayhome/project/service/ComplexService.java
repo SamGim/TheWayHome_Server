@@ -6,9 +6,8 @@ import com.thewayhome.project.dto.image.ComplexImageResponseDto;
 import com.thewayhome.project.exception.CustomError;
 import com.thewayhome.project.exception.CustomException;
 import com.thewayhome.project.repository.*;
-import org.locationtech.jts.geom.Point;
+import lombok.extern.slf4j.Slf4j;
 import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ComplexService {
-    private final ComplexRepository complexRepository;
     private final NaverMapsService naverMapsService;
     private final ImageService imageService;
     private final RealComplexRepository realComplexRepository;
@@ -32,9 +31,9 @@ public class ComplexService {
     private final MaintenanceCostIncludingsRepository maintenanceCostIncludingsRepository;
     private final LivingFacilityRepository livingFacilityRepository;
     private final HeatingFacilityRepository heatingFacilityRepository;
+    private final ApiService apiService;
     @Autowired
-    public ComplexService(ComplexRepository complexRepository, NaverMapsService naverMapsService, ImageService imageService, RealComplexRepository realComplexRepository, ComplexImageRepository complexImageRepository, SecurityFacilityRepository securityFacilityRepository, EtcFacilityRepository etcFacilityRepository, CoolingFacilityRepository coolingFacilityRepository, MaintenanceCostIncludingsRepository maintenanceCostIncludingsRepository, LivingFacilityRepository livingFacilityRepository, HeatingFacilityRepository heatingFacilityRepository) {
-        this.complexRepository = complexRepository;
+    public ComplexService(NaverMapsService naverMapsService, ImageService imageService, RealComplexRepository realComplexRepository, ComplexImageRepository complexImageRepository, SecurityFacilityRepository securityFacilityRepository, EtcFacilityRepository etcFacilityRepository, CoolingFacilityRepository coolingFacilityRepository, MaintenanceCostIncludingsRepository maintenanceCostIncludingsRepository, LivingFacilityRepository livingFacilityRepository, HeatingFacilityRepository heatingFacilityRepository, ApiService apiService) {
         this.naverMapsService = naverMapsService;
         this.imageService = imageService;
         this.realComplexRepository = realComplexRepository;
@@ -45,40 +44,14 @@ public class ComplexService {
         this.maintenanceCostIncludingsRepository = maintenanceCostIncludingsRepository;
         this.livingFacilityRepository = livingFacilityRepository;
         this.heatingFacilityRepository = heatingFacilityRepository;
+        this.apiService = apiService;
     }
 
-    public List<ComplexSimpleResponseDto> getComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat) {
-        List<Complex> withinMap = complexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
-
-        return withinMap.stream()
-                .map(ComplexSimpleResponseDto::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-    // 2
-    public List<RealComplexSimpleResponseDto> getRealComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat) {
-        List<RealComplex> withinMap = realComplexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
-
-        return withinMap.stream()
-                .map(RealComplexSimpleResponseDto::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-
-    public ComplexCardResponseDto getComplexCardInfo(Long id){
-        Complex complex = complexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
-        return ComplexCardResponseDto.fromEntity(complex);
-    }
 
     // 2
     public RealComplexCardResponseDto getRealComplexCardInfo(Long id){
         RealComplex complex = realComplexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
         return RealComplexCardResponseDto.fromEntity(complex, 1800000);
-    }
-
-    public ComplexDetailResponseDto getComplexDetailInfo(Long id){
-        Complex complex = complexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
-        return ComplexDetailResponseDto.fromEntity(complex);
     }
 
     // 2
@@ -98,50 +71,16 @@ public class ComplexService {
         return RealComplexDetailResponseDto.fromEntity(complex, mainImage, roomImages);
     }
 
-    @Transactional
-    public void updatePointColumn() throws ParseException {
-        List<Complex> complexes = complexRepository.findAll();
 
-        for (Complex complex : complexes) {
-            Double latitude = complex.getLatitude();
-            Double longitude = complex.getLongitude();
-
-            Point point = (latitude != null && longitude != null)
-                    ? (Point) new WKTReader().read(String.format("POINT(%s %s)", latitude, longitude))
-                    : null;
-
-            complex.setLocation(point);
-            complexRepository.save(complex);
-        }
-    }
-
-    public List<ComplexSimpleResponseDto2> getComplexesInBoundingBox2(double swLng, double swLat, double neLng, double neLat, String coPoint) {
-        List<Complex> withinMap = complexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
-        return withinMap.stream()
-                .map(x -> ComplexSimpleResponseDto2.fromEntity(x, naverMapsService.getComplexToCompanyTime(x.getLongitude() + "," + x.getLatitude(), coPoint)))
-                .collect(Collectors.toList());
-    }
-
-    // 2
-    public List<RealComplexSimpleResponseDto2> getRealComplexesInBoundingBox2(double swLng, double swLat, double neLng, double neLat, String coPoint) {
+    // 양끝 좌표 내 매물 들을 각각 Company까지의 시간과 함께 반환
+    public List<RealComplexSimpleResponseDto> getRealComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat, Long cpId) {
         List<RealComplex> withinMap = realComplexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
+        // RealComplexSimpleResponseDto에 직장까지 소요시간 추가하고 소요시간으로 리스트를 정렬해서 반환
         return withinMap.stream()
-                .map(x -> RealComplexSimpleResponseDto2.fromEntity(x, naverMapsService.getComplexToCompanyTime(x.getLongitude() + "," + x.getLatitude(), coPoint)))
+                .map(complex -> RealComplexSimpleResponseDto.fromEntity(complex, (int)(Math.random() % 60)))
+                .sorted((o1, o2) -> o1.getDuration() - o2.getDuration())
                 .collect(Collectors.toList());
-    }
 
-
-    public Complex registerComplex(ComplexRegisterRequestDto complexDto) {
-        try{
-            Complex complex = complexDto.toEntity();
-            return complexRepository.save(complex);
-        } catch (ParseException e) {
-            System.out.println("e = " + e);
-            throw new CustomException(CustomError.PARSE_ERROR);
-        } catch (Exception e){
-            System.out.println("e = " + e);
-            throw new CustomException(CustomError.DB_SAVE_ERROR);
-        }
     }
 
     @Transactional
@@ -240,11 +179,20 @@ public class ComplexService {
         }
     }
 
-    public void deleteComplex(long complexId) {
-        try{
-            complexRepository.deleteById(complexId);
-        }catch (Exception e){
-            throw new CustomException(CustomError.DB_DELETE_ERROR);
+    public List<RealComplexSimpleResponseDto> getRealComplexesByCompanyId(Long companyId) {
+        List<RealComplexSimpleResponseDto> rtn = new ArrayList<>();
+        List<ComplexTimeDto> complexIds = apiService.findComplexIdsByCompanyId(companyId);
+        log.info("api 요청결과 complex&times = " + complexIds);
+        for(ComplexTimeDto complex : complexIds){
+            Long id = complex.getId();
+            Integer duration = complex.getDuration();
+            RealComplex realComplex = realComplexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
+            RealComplexSimpleResponseDto realComplexSimpleResponseDto = RealComplexSimpleResponseDto.fromEntity(realComplex, duration);
+            rtn.add(realComplexSimpleResponseDto);
         }
+        return rtn;
+    }
+    public List<ComplexTimeDto> getTestComplexIds(Long companyId) {
+        return apiService.findComplexIdsByCompanyId(companyId);
     }
 }
