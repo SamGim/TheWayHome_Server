@@ -1,9 +1,6 @@
 package com.thewayhome.project.controller;
 
 
-import com.thewayhome.project.domain.Complex;
-import com.thewayhome.project.exception.CustomException;
-import com.thewayhome.project.service.ComplexService;
 import com.thewayhome.project.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-
-import static com.thewayhome.project.exception.CustomError.TEST_ERROR;
 
 @Slf4j
 @RestController
