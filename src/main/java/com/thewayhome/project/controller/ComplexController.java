@@ -1,13 +1,10 @@
 package com.thewayhome.project.controller;
 
 import com.thewayhome.project.dto.complex.*;
-import com.thewayhome.project.exception.CustomError;
-import com.thewayhome.project.exception.CustomException;
 import com.thewayhome.project.service.ComplexService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
-import org.locationtech.jts.io.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +30,8 @@ public class ComplexController {
     @Operation(summary = "매물 조회", description = "id로 특정 매물 조회")
     public ResponseEntity<Object> getRealComplexById(
             @Parameter(description = "매물 ID", required = true) @PathVariable long complexId,
-            @Parameter(description = "true일 경우 자세정보, false일 경우 카드 정보", required = true)  @RequestParam Boolean detail) {
-        if (detail){
+            @Parameter(description = "true일 경우 자세정보, false일 경우 카드 정보", required = true) @RequestParam Boolean detail) {
+        if (detail) {
             return ResponseEntity.ok(complexService.getRealComplexDetailInfo(complexId));
         } else {
             return ResponseEntity.ok(complexService.getRealComplexCardInfo(complexId));
@@ -43,23 +40,25 @@ public class ComplexController {
 
 
     // 2
-    @GetMapping("/real/list/inquery2")
+    @GetMapping("/list/inquery")
     @Operation(summary = "영역 내 매물 조회", description = "영역 내 매물과 직장까지 소요시간 조회")
-    public ResponseEntity<List<RealComplexSimpleResponseDto2>> getRealComplexesWithinBoundingBox2(
+    public ResponseEntity<List<RealComplexSimpleResponseDto>> getRealComplexesWithinBoundingBox2(
             @Parameter(description = "지도 남서쪽 longitude", required = true) @RequestParam(name = "sw_lng") double swLng,
             @Parameter(description = "지도 남서쪽 latitude", required = true) @RequestParam(name = "sw_lat") double swLat,
             @Parameter(description = "지도 북동쪽 longitude", required = true) @RequestParam(name = "ne_lng") double neLng,
             @Parameter(description = "지도 북동쪽 latitude", required = true) @RequestParam(name = "ne_lat") double neLat,
-            @Parameter(description = "직장 longitude", required = true) @RequestParam(name = "co_lng") double coLng,
-            @Parameter(description = "직장 latitude", required = true) @RequestParam(name = "co_lat") double coLat) {
-        String coPoint = coLng + "," + coLat;
-        return ResponseEntity.ok(complexService.getRealComplexesInBoundingBox2(swLng, swLat, neLng, neLat, coPoint));
+            @Parameter(description = "직장 ID", required = true) @RequestParam(name = "cp_id") Long cpId) {
+        return ResponseEntity.ok(complexService.getRealComplexesInBoundingBox(swLng, swLat, neLng, neLat, cpId));
     }
 
-    @PostMapping
-    public ResponseEntity<Object> registerComplex(@RequestBody ComplexRegisterRequestDto complexDto){
-        return ResponseEntity.ok(complexService.registerComplex(complexDto));
+    // companyId로 매물 10개 조회
+    @GetMapping("/list/inquery/{companyId}")
+    @Operation(summary = "company 기준 매물 조회", description = "회사로 부터 소요시간 기준 10개 매물 조회")
+    public ResponseEntity<List<RealComplexSimpleResponseDto>> getRealComplexesByCompanyId(
+            @Parameter(description = "회사 ID", required = true) @PathVariable Long companyId) {
+        return ResponseEntity.ok(complexService.getRealComplexesByCompanyId(companyId));
     }
+
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "매물 등록", description = "매물 등록")
     public ResponseEntity<RealComplexDetailResponseDto> registerRealComplex(
