@@ -16,8 +16,8 @@ public class CompanyComplexDuration {
     @Column(name = "ccd_id")
     private Long ccdId;
     @Column(name = "min_duration")
-    private Integer min_duration;
+    private Integer minDuration;
     @Column(name = "max_duration")
-    private Integer max_duration;
+    private Integer maxDuration;
 
 }
