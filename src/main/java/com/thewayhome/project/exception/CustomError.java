@@ -17,7 +17,11 @@ public enum CustomError {
     JSON_PROCESSING_ERROR(500, "JSON 파싱 에러"),
     IMAGE_UPLOAD_ERROR(500, "이미지 업로드 실패"),
     JAVA_IO_ERROR(500, "IOException"),
-    DB_DELETE_ERROR(500, "DB에서 삭제 실패했습니다.")
+    DB_DELETE_ERROR(500, "DB에서 삭제 실패했습니다."),
+    PTIS_SERVER_REQUEST_4XX_ERROR(500, "PTIS 서버 요청에 실패했습니다."),
+    PTIS_SERVER_REQUEST_UNKNOWN_ERROR(500, "PTIS 서버 요청에 실패했습니다."),
+    JSON_STRING_PARSING_ERROR(500, "JSON String 파싱 에러"),
+    WEB_FLUX_ERROR(500, "WebFlux 에러"),
     ;
 
 
