@@ -2,9 +2,6 @@ package com.thewayhome.project.dto.complex;
 
 import com.thewayhome.project.domain.RealComplex;
 import lombok.*;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
 
 @Getter
 @Setter
@@ -13,25 +10,32 @@ import org.locationtech.jts.io.WKTReader;
 @Builder
 public class RealComplexSimpleResponseDto {
     private Long id;
+    private String address;
     private String tradeTypeName;
-    private String name;
     private String dealPrc;
     private String warrantPrc;
+    private String maintenanceCost;
+    private String structure;
+    private String dedicatedArea;
+    private Integer floor;
     private Double latitude;
     private Double longitude;
+    private Integer duration;
 
-    public static RealComplexSimpleResponseDto fromEntity(RealComplex complex) {
-
+    public static RealComplexSimpleResponseDto fromEntity(RealComplex complex, Integer duration){
         return RealComplexSimpleResponseDto.builder()
                 .id(complex.getId())
-                .name(complex.getName())
+                .address(complex.getAddress())
                 .tradeTypeName(complex.getTradeTypeName())
                 .dealPrc(complex.getDealPrc())
                 .warrantPrc(complex.getWarrantPrc())
+                .maintenanceCost(complex.getMaintenanceCost())
+                .structure(complex.getStructure())
+                .dedicatedArea(complex.getDedicatedArea())
+                .floor(complex.getFloor())
                 .latitude(complex.getLatitude())
                 .longitude(complex.getLongitude())
+                .duration(duration)
                 .build();
     }
 }
-
-
