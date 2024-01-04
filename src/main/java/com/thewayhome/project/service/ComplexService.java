@@ -181,7 +181,9 @@ public class ComplexService {
 
     public List<RealComplexSimpleResponseDto> getRealComplexesByCompanyId(Long companyId) {
         List<RealComplexSimpleResponseDto> rtn = new ArrayList<>();
+
         List<ComplexTimeDto> complexIds = apiService.findComplexIdsByCompanyId(companyId);
+
         log.info("api 요청결과 complex&times = " + complexIds);
         for(ComplexTimeDto complex : complexIds){
             Long id = complex.getId();
@@ -194,5 +196,15 @@ public class ComplexService {
     }
     public List<ComplexTimeDto> getTestComplexIds(Long companyId) {
         return apiService.findComplexIdsByCompanyId(companyId);
+    }
+
+    public RealComplexDetailWithPathResponseDto getRealComplexDetailWithPath(long complexId, long companyId) {
+        RealComplexDetailResponseDto complex =  this.getRealComplexDetailInfo(complexId);
+        List<SPLResponseDto> spls = apiService.findComplexAndPath(complexId, companyId);
+        return RealComplexDetailWithPathResponseDto.builder()
+                .complex(complex)
+                .path(spls)
+                .build();
+
     }
 }

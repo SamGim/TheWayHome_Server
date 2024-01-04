@@ -25,17 +25,13 @@ public class ComplexController {
     }
 
 
-    // 2
+    // 파라미터에 company id 추가
     @GetMapping("/info/inquery/{complexId}")
     @Operation(summary = "매물 조회", description = "id로 특정 매물 조회")
-    public ResponseEntity<Object> getRealComplexById(
+    public ResponseEntity<RealComplexDetailWithPathResponseDto> getRealComplexById(
             @Parameter(description = "매물 ID", required = true) @PathVariable long complexId,
-            @Parameter(description = "true일 경우 자세정보, false일 경우 카드 정보", required = true) @RequestParam Boolean detail) {
-        if (detail) {
-            return ResponseEntity.ok(complexService.getRealComplexDetailInfo(complexId));
-        } else {
-            return ResponseEntity.ok(complexService.getRealComplexCardInfo(complexId));
-        }
+            @Parameter(description = "직장ID", required = true) @RequestParam long companyId) {
+        return ResponseEntity.ok(complexService.getRealComplexDetailWithPath(complexId, companyId));
     }
 
 
