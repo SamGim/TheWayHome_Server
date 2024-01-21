@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class OauthInfo {
-    String iss;
-    String sub;
+    String provider;
+    String userId;
 }

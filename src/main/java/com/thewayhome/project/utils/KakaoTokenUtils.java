@@ -56,7 +56,7 @@ public class KakaoTokenUtils extends AbstractTokenUtils {
             return false;
         }
 
-        //extract aud
+        //extract aud -> native app key
         String aud = (String) payloadObj.get("aud");
 
         //check aud
@@ -97,8 +97,8 @@ public class KakaoTokenUtils extends AbstractTokenUtils {
     @Override
     public OauthInfo getOauthInfo(String token) throws ParseException {
         return OauthInfo.builder()
-                .iss(getSubject(token)) // userId
-                .sub(PROVIDER_KAKAO)
+                .userId(getSubject(token))
+                .provider(PROVIDER_KAKAO)
                 .build();
     }
 

@@ -1,6 +1,5 @@
 package com.thewayhome.project.utils;
 
-
 import com.auth0.jwk.JwkException;
 import io.jsonwebtoken.*;
 import org.json.simple.parser.ParseException;
@@ -10,20 +9,19 @@ import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
 @Component
 public class JwtTokenUtils extends AbstractTokenUtils {
-    private final String SECRET_KEY = "yeKterceS";
+    private final String SECRET_KEY = "secretkey";
 
-    public String generateAccessToken(String sub, String iss){
+    public String generateAccessToken(String userId, String provider){
         Date now = new Date();
         return Jwts.builder()
                 .setHeaderParams(createHeaders())
-                .setClaims(createClaims(sub, iss))
+                .setClaims(createClaims(userId, provider))
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + TimeUnit.DAYS.toMillis(600)))
+                .setExpiration(new Date(now.getTime() + Duration.ofHours(12).toMillis()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
@@ -31,7 +29,7 @@ public class JwtTokenUtils extends AbstractTokenUtils {
         Date now = new Date();
         return Jwts.builder()
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + Duration.ofDays(600).toMillis()))
+                .setExpiration(new Date(now.getTime() + Duration.ofDays(60).toMillis()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
@@ -64,10 +62,10 @@ public class JwtTokenUtils extends AbstractTokenUtils {
         return null;
     }
 
-    public Claims createClaims(String sub, String iss){
+    public Claims createClaims(String userId, String provider){
         Claims claims = Jwts.claims();
-        claims.put("sub", sub);
-        claims.put("iss", iss);
+        claims.put("sub", userId);
+        claims.put("iss", provider);
         return claims;
     }
 
@@ -86,8 +84,8 @@ public class JwtTokenUtils extends AbstractTokenUtils {
     @Override
     public OauthInfo getOauthInfo(String token) throws ParseException {
         return OauthInfo.builder()
-                .sub(getSubject(token))
-                .iss(getIssuer(token))
+                .userId(getSubject(token))
+                .provider(getIssuer(token))
                 .build();
     }
 
