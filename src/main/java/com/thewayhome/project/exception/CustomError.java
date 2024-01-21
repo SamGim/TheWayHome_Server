@@ -22,6 +22,8 @@ public enum CustomError {
     PTIS_SERVER_REQUEST_UNKNOWN_ERROR(500, "PTIS 서버 요청에 실패했습니다."),
     JSON_STRING_PARSING_ERROR(500, "JSON String 파싱 에러"),
     WEB_FLUX_ERROR(500, "WebFlux 에러"),
+
+    NOT_A_MEMBER(402, "존재하지 않는 회원입니다."),
     ;
 
 
