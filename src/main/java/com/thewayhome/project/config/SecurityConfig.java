@@ -37,8 +37,8 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
                 .requestMatchers(request -> request.getServletPath().startsWith("/resources/"))
-                .requestMatchers(request -> request.getServletPath().startsWith("/static/"))
-                .requestMatchers(request -> request.getServletPath().startsWith("/public/"))
+                .requestMatchers(request -> request.getServletPath().startsWith("/api-docs/"))
+                .requestMatchers(request -> request.getServletPath().startsWith("/swagger-ui/**"))
                 .requestMatchers(request -> request.getServletPath().startsWith("/register"));
     }
 

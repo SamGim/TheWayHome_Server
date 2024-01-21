@@ -57,6 +57,7 @@ public class JwtTokenFilter extends AbstractAuthenticationProcessingFilter {
 //        EXCLUDED_PATHS.put("/swagger-ui/", List.of(HttpMethod.GET));
 //        EXCLUDED_PATHS.put("/webjars/", List.of(HttpMethod.GET));
         EXCLUDED_PATHS.put("/api-docs", List.of(HttpMethod.GET));
+        EXCLUDED_PATHS.put("/swagger-ui/", List.of(HttpMethod.GET));
         EXCLUDED_PATHS.put("/register", List.of(HttpMethod.POST));
 //        EXCLUDED_PATHS.put("/v2/api-docs", List.of(HttpMethod.GET));
     }
