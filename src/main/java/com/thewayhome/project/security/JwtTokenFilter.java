@@ -7,6 +7,8 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,14 +19,17 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class JwtTokenFilter extends AbstractAuthenticationProcessingFilter {
     final String AUTH_HEADER_NAME = "Authorization";
     final String BEARER_NAME = "Bearer";
@@ -49,10 +54,11 @@ public class JwtTokenFilter extends AbstractAuthenticationProcessingFilter {
         super(new AntPathRequestMatcher("/**"));
         setAuthenticationManager(authenticationManager);
         // "/device/**" 경로에서 HTTP GET 메소드를 제외
-        EXCLUDED_PATHS.put("/swagger-ui/", List.of(HttpMethod.GET));
-        EXCLUDED_PATHS.put("/webjars/", List.of(HttpMethod.GET));
-        EXCLUDED_PATHS.put("/v3/api-docs", List.of(HttpMethod.GET));
-        EXCLUDED_PATHS.put("/v2/api-docs", List.of(HttpMethod.GET));
+//        EXCLUDED_PATHS.put("/swagger-ui/", List.of(HttpMethod.GET));
+//        EXCLUDED_PATHS.put("/webjars/", List.of(HttpMethod.GET));
+        EXCLUDED_PATHS.put("/api-docs", List.of(HttpMethod.GET));
+        EXCLUDED_PATHS.put("/register", List.of(HttpMethod.POST));
+//        EXCLUDED_PATHS.put("/v2/api-docs", List.of(HttpMethod.GET));
     }
 
 
@@ -98,7 +104,26 @@ public class JwtTokenFilter extends AbstractAuthenticationProcessingFilter {
 //        String cachedToken = getAccessTokenFromCache(token); // 캐시에서 토큰 가져오기
 //        token = cachedToken != null ? cachedToken : token; // 캐시에 값이 있으면 캐시 값으로 토큰 설정
         if (StringUtils.hasText(token) ) {
-            return this.getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));
+            try{
+                return this.getAuthenticationManager().authenticate(new JwtAuthenticationToken(token));
+            } catch (Exception e){
+                log.error("e = {}", e.getMessage());
+//                throw new AuthenticationException(e.getMessage()) {
+//                };
+
+                // status-line
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                // response header
+                response.setContentType("text/plain");
+                response.setCharacterEncoding("utf-8");
+
+                PrintWriter writer = response.getWriter();
+                writer.println(e.getMessage());
+
+                return null;
+            }
+
         }
         throw new AuthenticationCredentialsNotFoundException("No JWT token found in request headers");
     }
