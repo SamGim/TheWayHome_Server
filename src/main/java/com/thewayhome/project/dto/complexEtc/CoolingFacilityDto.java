@@ -1,6 +1,7 @@
 package com.thewayhome.project.dto.complexEtc;
 
 import com.thewayhome.project.domain.CoolingFacility;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,23 +12,28 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 public class CoolingFacilityDto{
-    Boolean wallMounted;
-    Boolean stand;
-    Boolean windowMounted;
-    Boolean ceiling;
-    Boolean separation;
-    Boolean centralAirConditioning;
+    // 벽걸이형
+    private Boolean wallMounted;
+
+    // 스탠드형
+    private Boolean stand;
+
+    // 천장형
+    private Boolean ceiling;
+
+    // 이동형
     private Boolean mobile;
+
+    // 기타
+    private String etc;
 
     public static CoolingFacilityDto fromEntity(CoolingFacility coolingFacility){
         return CoolingFacilityDto.builder()
                 .wallMounted(coolingFacility.getWallMounted())
                 .stand(coolingFacility.getStand())
-                .windowMounted(coolingFacility.getWindowMounted())
                 .ceiling(coolingFacility.getCeiling())
-                .separation(coolingFacility.getSeparation())
-                .centralAirConditioning(coolingFacility.getCentralAirConditioning())
                 .mobile(coolingFacility.getMobile())
+                .etc(coolingFacility.getEtc())
                 .build();
     }
 
@@ -35,11 +41,9 @@ public class CoolingFacilityDto{
         return CoolingFacility.builder()
                 .wallMounted(this.wallMounted)
                 .stand(this.stand)
-                .windowMounted(this.windowMounted)
                 .ceiling(this.ceiling)
-                .separation(this.separation)
-                .centralAirConditioning(this.centralAirConditioning)
                 .mobile(this.mobile)
+                .etc(this.etc)
                 .build();
     }
 }

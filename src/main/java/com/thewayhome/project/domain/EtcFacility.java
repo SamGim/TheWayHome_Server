@@ -36,4 +36,8 @@ public class EtcFacility {
     // 소화기
     @Column(name = "fire_extinguisher", columnDefinition = "boolean default false")
     private Boolean fireExtinguisher;
+
+    // 기타
+    @Column(name = "etc")
+    private String etc;
 }

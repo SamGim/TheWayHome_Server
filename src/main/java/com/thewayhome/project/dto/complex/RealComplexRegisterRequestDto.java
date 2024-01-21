@@ -2,6 +2,7 @@ package com.thewayhome.project.dto.complex;
 
 import com.thewayhome.project.domain.*;
 import com.thewayhome.project.dto.complexEtc.*;
+import com.thewayhome.project.dto.image.ComplexImageResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.locationtech.jts.geom.Point;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class RealComplexRegisterRequestDto {
+    // 매물 이름
     private String name;
 
     // 거래유형(전세, 월세, 매매)
@@ -37,10 +39,13 @@ public class RealComplexRegisterRequestDto {
     // 구조(오픈형 원룸, 분리형 원룸, 복층형 원룸, 투룸, 쓰리룸, 포룸+)
     private String structure;
 
-    // 임대료
+    // 방 상세구조
+    private String detailStructure;
+
+    // 임대료(전세가, 월세가, 매매가)
     private String dealPrc;
 
-    // 보증금
+    // 월세 보증금
     private String warrantPrc;
 
     // 관리비(단위: 만원)
@@ -52,7 +57,7 @@ public class RealComplexRegisterRequestDto {
     // 입주가능일
     private String availableDate;
 
-    // 입주협가능여부
+    // 입주협가능여부 ---
     private Boolean availableDateNegotiable;
 
     // 전체층
@@ -61,6 +66,7 @@ public class RealComplexRegisterRequestDto {
     // 해당층
     private Integer floor;
 
+    //---
     // 옥탑형
     private Boolean rooftop;
 
@@ -69,34 +75,34 @@ public class RealComplexRegisterRequestDto {
 
     // 지하
     private Boolean underground;
-
+    //---
 
     private Double latitude;
 
     private Double longitude;
 
+    // 주실 방향 기준
+    private String roomDirection;
 
-    // 여기서부터 옵션
+    // 주실 방향
+    private String roomDirectionDetail;
+
+    // 욕실수
+    private Integer bathroomCount;
+
     // 주차가능
-    private Boolean parkable;
+    private Integer parkable;
 
     // 엘리베이터 여부
     private Boolean elevatable;
 
-    // 옵션(싱크대, 에어컨, 세탁기, ...etc)
-    private String options;
-
-    // 매물 설명
-    private String details;
+    // 펫 여부
+    private Boolean petable;
 
     // 대출 여부(LH전세대출 가능, 카카오뱅크 전세대출 가능)
     private String loan;
 
-    // 펫 여부
-    private Boolean petable;
-
-    // 욕실수
-    private Integer bathroomCount;
+    // 여기서부터 옵션
 
     // 시설정보옵션들
     // 난방시설
@@ -114,6 +120,7 @@ public class RealComplexRegisterRequestDto {
     // 기타시설
     private EtcFacilityDto etcFacility;
 
+    // 상세설명
     private String description;
 
     public RealComplex toEntity() throws ParseException {
@@ -121,34 +128,36 @@ public class RealComplexRegisterRequestDto {
                 ? (Point) new WKTReader().read(String.format("POINT(%s %s)", latitude, longitude))
                 : null;
         return RealComplex.builder()
-                .name(name)
-                .tradeTypeName(tradeTypeName)
-                .address(address)
-                .detailAddress(detailAddress)
-                .supplyArea(supplyArea)
-                .dedicatedArea(dedicatedArea)
-                .structure(structure)
-                .dealPrc(dealPrc)
-                .warrantPrc(warrantPrc)
-                .maintenanceCost(maintenanceCost)
-                .availableDate(availableDate)
-                .availableDateNegotiable(availableDateNegotiable)
-                .wholeFloor(wholeFloor)
-                .floor(floor)
-                .rooftop(rooftop)
-                .basement(basement)
-                .underground(underground)
-                .latitude(latitude)
-                .longitude(longitude)
-                .parkable(parkable)
-                .elevatable(elevatable)
-                .options(options)
-                .details(details)
-                .loan(loan)
-                .petable(petable)
-                .bathroomCount(bathroomCount)
-                .description(description)
+                .name(this.name)
+                .tradeTypeName(this.tradeTypeName)
+                .address(this.address)
+                .detailAddress(this.detailAddress)
+                .supplyArea(this.supplyArea)
+                .dedicatedArea(this.dedicatedArea)
+                .structure(this.structure)
+                .detailStructure(this.detailStructure)
+                .dealPrc(this.dealPrc)
+                .warrantPrc(this.warrantPrc)
+                .maintenanceCost(this.maintenanceCost)
+                .availableDate(this.availableDate)
+                .availableDateNegotiable(this.availableDateNegotiable)
+                .wholeFloor(this.wholeFloor)
+                .floor(this.floor)
+                .rooftop(this.rooftop)
+                .basement(this.basement)
+                .underground(this.underground)
                 .location(point)
+                .roomDirection(this.roomDirection)
+                .roomDirectionDetail(this.roomDirectionDetail)
+                .bathroomCount(this.bathroomCount)
+                .parkable(this.parkable)
+                .elevatable(this.elevatable)
+                .petable(this.petable)
+                .loan(this.loan)
+                .description(this.description)
+                .latitude(this.latitude)
+                .longitude(this.longitude)
+
                 .build();
     }
 }

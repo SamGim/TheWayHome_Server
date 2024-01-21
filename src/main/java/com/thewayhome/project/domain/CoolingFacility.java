@@ -25,23 +25,27 @@ public class CoolingFacility {
     @Column(name = "stand", columnDefinition = "boolean default false")
     private Boolean stand;
 
-    // 창문형
-    @Column(name = "window_mounted", columnDefinition = "boolean default false")
-    private Boolean windowMounted;
+//    // 창문형
+//    @Column(name = "window_mounted", columnDefinition = "boolean default false")
+//    private Boolean windowMounted;
 
     // 천장형
     @Column(name = "ceiling", columnDefinition = "boolean default false")
     private Boolean ceiling;
 
-    // 분리형
-    @Column(name = "separation", columnDefinition = "boolean default false")
-    private Boolean separation;
+//    // 분리형
+//    @Column(name = "separation", columnDefinition = "boolean default false")
+//    private Boolean separation;
 
-    // 중앙공조
-    @Column(name = "central_air_conditioning", columnDefinition = "boolean default false")
-    private Boolean centralAirConditioning;
+//    // 중앙공조
+//    @Column(name = "central_air_conditioning", columnDefinition = "boolean default false")
+//    private Boolean centralAirConditioning;
 
     // 이동형
     @Column(name = "mobile", columnDefinition = "boolean default false")
     private Boolean mobile;
+
+    // 기타
+    @Column(name = "etc")
+    private String etc;
 }

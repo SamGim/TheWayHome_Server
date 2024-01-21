@@ -17,9 +17,9 @@ public class SecurityFacility {
     @Column(name = "id")
     private Long id;
 
-    // 사설 경비원
-    @Column(name = "private_security_guard", columnDefinition = "boolean default false")
-    private Boolean privateSecurityGuard;
+//    // 사설 경비원
+//    @Column(name = "private_security_guard", columnDefinition = "boolean default false")
+//    private Boolean privateSecurityGuard;
 
     // CCTV
     @Column(name = "cctv", columnDefinition = "boolean default false")
@@ -48,5 +48,9 @@ public class SecurityFacility {
     // 창문 방법창
     @Column(name = "window_method_window", columnDefinition = "boolean default false")
     private Boolean windowMethodWindow;
+
+    // 기타
+    @Column(name = "etc")
+    private String etc;
 
 }

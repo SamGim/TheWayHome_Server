@@ -18,9 +18,9 @@ public class LivingFacility {
     @Column(name = "id")
     private Long id;
 
-    // 에어컨
-    @Column(name = "air_conditioner", columnDefinition = "boolean default false")
-    private Boolean airConditioner;
+//    // 에어컨
+//    @Column(name = "air_conditioner", columnDefinition = "boolean default false")
+//    private Boolean airConditioner;
 
     // 냉장고
     @Column(name = "refrigerator", columnDefinition = "boolean default false")
@@ -46,17 +46,13 @@ public class LivingFacility {
     @Column(name = "desk", columnDefinition = "boolean default false")
     private Boolean desk;
 
-    // 책장
-    @Column(name = "bookshelf", columnDefinition = "boolean default false")
-    private Boolean bookshelf;
+//    // 책장
+//    @Column(name = "bookshelf", columnDefinition = "boolean default false")
+//    private Boolean bookshelf;
 
     // 식탁
     @Column(name = "dining_table", columnDefinition = "boolean default false")
     private Boolean diningTable;
-
-    // 의자
-    @Column(name = "chair", columnDefinition = "boolean default false")
-    private Boolean chair;
 
     // 침대
     @Column(name = "bed", columnDefinition = "boolean default false")
@@ -102,11 +98,15 @@ public class LivingFacility {
     @Column(name = "dishwasher", columnDefinition = "boolean default false")
     private Boolean dishwasher;
 
-    // 인덕션
-    @Column(name = "induction_stove", columnDefinition = "boolean default false")
-    private Boolean inductionStove;
-
     // 가스오븐
     @Column(name = "gas_oven", columnDefinition = "boolean default false")
     private Boolean gasOven;
+
+    // TV
+    @Column(name = "tv", columnDefinition = "boolean default false")
+    private Boolean tv;
+
+    // 기타
+    @Column(name = "etc")
+    private String etc;
 }

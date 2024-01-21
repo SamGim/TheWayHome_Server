@@ -14,6 +14,7 @@ public class MaintenanceCostIncludingsDto {
     Boolean internet;
     Boolean water;
     Boolean tv;
+    String etc;
 
     public static MaintenanceCostIncludingsDto fromEntity(MaintenanceCostIncludings maintenanceCostIncludings){
         return MaintenanceCostIncludingsDto.builder()
@@ -22,6 +23,7 @@ public class MaintenanceCostIncludingsDto {
                 .internet(maintenanceCostIncludings.getInternet())
                 .water(maintenanceCostIncludings.getWater())
                 .tv(maintenanceCostIncludings.getTv())
+                .etc(maintenanceCostIncludings.getEtc())
                 .build();
     }
 
@@ -33,6 +35,7 @@ public class MaintenanceCostIncludingsDto {
                 .internet(this.internet)
                 .water(this.water)
                 .tv(this.tv)
+                .etc(this.etc)
                 .build();
     }
 

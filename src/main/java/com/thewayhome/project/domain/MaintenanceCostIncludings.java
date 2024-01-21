@@ -32,4 +32,7 @@ public class MaintenanceCostIncludings {
     @Column(name = "tv", nullable = false)
     private Boolean tv;
 
+    @Column(name = "etc")
+    private String etc;
+
 }

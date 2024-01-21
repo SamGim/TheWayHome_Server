@@ -48,16 +48,20 @@ public class RealComplex extends BaseEntity {
     @Column(name = "structure", nullable = false)
     private String structure;
 
+    // 방 상세구조
+    @Column(name = "detail_structure", nullable = false)
+    private String detailStructure;
+
     // 임대료(전세가, 월세가, 매매가)
-    @Column(name = "deal_prc", nullable = false)
+    @Column(name = "deal_prc")
     private String dealPrc;
 
     // 월세 보증금
-    @Column(name = "warrant_prc", nullable = false)
+    @Column(name = "warrant_prc")
     private String warrantPrc;
 
     // 관리비(단위: 만원)
-    @Column(name = "maintenance_fee", nullable = false)
+    @Column(name = "maintenance_fee")
     private String maintenanceCost;
 
     // 관리비 포함내역(전기세, 가스, 인터넷, 수도, TV)
@@ -69,7 +73,7 @@ public class RealComplex extends BaseEntity {
     @Column(name = "available_date", nullable = false)
     private String availableDate;
 
-    // 입주협가능여부
+    // 입주협가능여부 ---
     @Column(name = "available_date_negotiable", nullable = false)
     private Boolean availableDateNegotiable;
 
@@ -81,6 +85,7 @@ public class RealComplex extends BaseEntity {
     @Column(name = "floor", nullable = false)
     private Integer floor;
 
+    //---
     // 옥탑형
     @Column(name = "rooftop", nullable = false)
     private Boolean rooftop;
@@ -92,6 +97,7 @@ public class RealComplex extends BaseEntity {
     // 지하
     @Column(name = "underground", nullable = false)
     private Boolean underground;
+    //---
 
     // 대표사진
     @Column(name = "main_image_url", nullable = true)
@@ -111,35 +117,37 @@ public class RealComplex extends BaseEntity {
     @Column(name = "location", columnDefinition="POINT")
     private Point location;
 
+    // 주실 방향 기준
+    @Column(name = "room_direction", nullable = false)
+    private String roomDirection;
 
-    // 여기서부터 옵션
+    // 주실 방향
+    @Column(name = "room_direction_detail", nullable = false)
+    private String roomDirectionDetail;
+
+    // 욕실수
+    @Column(name = "bathroom_count", nullable = false)
+    private Integer bathroomCount;
+
     // 주차가능
-    @Column(name = "parkable")
-    private Boolean parkable;
+    @Column(name = "parkable", nullable = false)
+    private Integer parkable;
 
     // 엘리베이터 여부
-    @Column(name = "elevatable")
+    @Column(name = "elevatable", nullable = false)
     private Boolean elevatable;
 
-    // 옵션(싱크대, 에어컨, 세탁기, ...etc)
-    @Column(name = "options")
-    private String options;
-
-    // 매물 설명
-    @Column(name = "details")
-    private String details;
+    // 펫 여부
+    @Column(name = "petable", nullable = false)
+    private Boolean petable;
 
     // 대출 여부(LH전세대출 가능, 카카오뱅크 전세대출 가능)
     @Column(name = "loan")
     private String loan;
 
-    // 펫 여부
-    @Column(name = "petable")
-    private Boolean petable;
 
-    // 욕실수
-    @Column(name = "bathroom_count")
-    private Integer bathroomCount;
+    // 여기서부터 옵션
+
 
     // 시설정보옵션들
     // 난방시설

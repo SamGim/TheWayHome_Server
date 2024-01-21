@@ -15,6 +15,7 @@ public class EtcFacilityDto {
     private Boolean veranda;
     private Boolean terrace;
     private Boolean fireExtinguisher;
+    private String etc;
 
     public static EtcFacilityDto fromEntity(EtcFacility etcFacilityDto){
         return EtcFacilityDto.builder()
@@ -23,6 +24,7 @@ public class EtcFacilityDto {
                 .veranda(etcFacilityDto.getVeranda())
                 .terrace(etcFacilityDto.getTerrace())
                 .fireExtinguisher(etcFacilityDto.getFireExtinguisher())
+                .etc(etcFacilityDto.getEtc())
                 .build();
     }
 
@@ -33,6 +35,7 @@ public class EtcFacilityDto {
                 .veranda(this.veranda)
                 .terrace(this.terrace)
                 .fireExtinguisher(this.fireExtinguisher)
+                .etc(this.etc)
                 .build();
     }
 }
