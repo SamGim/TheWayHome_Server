@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ssh -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -o StrictHostKeyChecking=no << 'ENDSSH'
+ssh -tt -p ${SERVER_PORT} ${SERVER_USER}@${SERVER_HOST} -i key.txt -o StrictHostKeyChecking=no << 'ENDSSH'
 @echo off
 SET CONTAINER_NAME=thewayhome
 SET VERSION=0.0.1
