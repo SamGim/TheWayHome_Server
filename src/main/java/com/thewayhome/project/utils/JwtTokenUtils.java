@@ -21,7 +21,7 @@ public class JwtTokenUtils extends AbstractTokenUtils {
                 .setHeaderParams(createHeaders())
                 .setClaims(createClaims(userId, provider))
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + Duration.ofHours(12).toMillis()))
+                .setExpiration(new Date(now.getTime() + Duration.ofHours(12000).toMillis()))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
