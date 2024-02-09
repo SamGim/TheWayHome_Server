@@ -17,10 +17,12 @@ import java.util.Optional;
 @Service
 public class CompanyService {
     @Autowired
-    public CompanyService(CompanyRepository companyRepository){
+    public CompanyService(CompanyRepository companyRepository, ApiService apiService){
         this.companyRepository = companyRepository;
+        this.apiService = apiService;
     }
     private final CompanyRepository companyRepository;
+    private final ApiService apiService;
 
     public Page<CompanyGetFullNameResponseDto> searchCompanyNameByPart(Pageable page, String part) {
         return companyRepository.searchCompanyByPartName(page, part);
@@ -35,7 +37,9 @@ public class CompanyService {
         company.setUpdatedBy("admin");
         // 회사 등록
         try{
-            return companyRepository.save(company);
+            Company cp = companyRepository.save(company);
+            apiService.uploadCompanyData(cp);
+            return cp;
         } catch (Exception e) {
             System.out.println("e = " + e);
             throw new CustomException(CustomError.DB_SAVE_ERROR);

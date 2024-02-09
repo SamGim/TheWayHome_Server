@@ -34,7 +34,7 @@ public class UserDetailsService {
     public Boolean isMember(UserDetails user) {
         User member = userRepository
                 .findByUsernameAndProvider(user.getUsername(), user.getProvider())
-                .orElseThrow(() -> new UsernameNotFoundException("cannot find such user"));
+                .orElseThrow(() -> new UsernameNotFoundException("cannot find such user : " + user.getUsername() + " " + user.getProvider()));
         return member.getPhoneNumber() != null && member.getNickname() != null;
     }
 }

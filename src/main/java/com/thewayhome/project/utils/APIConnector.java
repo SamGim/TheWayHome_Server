@@ -66,4 +66,47 @@ public class APIConnector {
             }
         });
     }
+
+    public static Mono<String> postDataToAPI (
+            String endpoint,
+            String path,
+            MultiValueMap<String, Object> queryBody
+    ) {
+        HttpClient httpClient = HttpClient.create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .responseTimeout(Duration.ofMillis(5000))
+                .doOnConnected(conn -> conn
+                        .addHandlerLast(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS))
+                        .addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS))
+                );
+
+        WebClient client = WebClient.builder()
+                .baseUrl(endpoint)
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .build();
+
+        WebClient.RequestBodySpec bodySpec = client.method(HttpMethod.POST)
+                .uri(uriBuilder -> uriBuilder
+                        .path(path)
+                        .build()
+                );
+
+        bodySpec.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)
+                .acceptCharset(StandardCharsets.UTF_8)
+                .ifNoneMatch("*")
+                .ifModifiedSince(ZonedDateTime.now())
+                .bodyValue(queryBody)
+                .retrieve();
+
+        return bodySpec.exchangeToMono(response -> {
+            if (response.statusCode().is2xxSuccessful()) {
+                return response.bodyToMono(String.class);
+            } else if (response.statusCode().is4xxClientError()) {
+                return Mono.error(new CustomException(CustomError.PTIS_SERVER_REQUEST_4XX_ERROR));
+            } else {
+                return Mono.error(new CustomException(CustomError.PTIS_SERVER_REQUEST_UNKNOWN_ERROR));
+            }
+        });
+    }
 }

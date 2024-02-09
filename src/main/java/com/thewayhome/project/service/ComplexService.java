@@ -167,7 +167,9 @@ public class ComplexService {
             complex.setUpdatedBy("admin");
 
             complex.setRoomImages(roomImages);
-            realComplexRepository.save(complex);
+            RealComplex cp = realComplexRepository.save(complex);
+            apiService.uploadComplexData(cp);
+
             return RealComplexDetailResponseDto.fromEntity(complex, mImageDto, roomImagesDto);
 
         } catch (ParseException e) {
