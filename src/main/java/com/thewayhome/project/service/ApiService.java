@@ -26,8 +26,8 @@ import java.util.Objects;
 @Slf4j
 public class ApiService {
     private final APIConnector apiConnector;
-    private final String baseURL = "http://localhost:8080";
-
+//    private final String baseURL = "http://localhost:8080";
+    private final String baseURL = "http://wasuphj.synology.me:8080";
     @Autowired
     public ApiService(APIConnector apiConnector) {
         this.apiConnector = apiConnector;
