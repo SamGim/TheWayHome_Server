@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,11 +49,6 @@ public class ComplexService {
     }
 
 
-    // 2
-    public RealComplexCardResponseDto getRealComplexCardInfo(Long id){
-        RealComplex complex = realComplexRepository.findById(id).orElseThrow(() -> new CustomException(CustomError.WRONG_ID_ERROR));
-        return RealComplexCardResponseDto.fromEntity(complex, 1800000);
-    }
 
     // 2
     public RealComplexDetailResponseDto getRealComplexDetailInfo(Long id){
@@ -75,12 +71,26 @@ public class ComplexService {
     // 양끝 좌표 내 매물 들을 각각 Company까지의 시간과 함께 반환
     public List<RealComplexSimpleResponseDto> getRealComplexesInBoundingBox(double swLng, double swLat, double neLng, double neLat, Long cpId) {
         List<RealComplex> withinMap = realComplexRepository.findComplexesInBoundingBox(swLng, swLat, neLng, neLat);
+        List<Long> complexIds = withinMap.stream().map(RealComplex::getId).collect(Collectors.toList());
         // RealComplexSimpleResponseDto에 직장까지 소요시간 추가하고 소요시간으로 리스트를 정렬해서 반환
-        return withinMap.stream()
-                .map(complex -> RealComplexSimpleResponseDto.fromEntity(complex, (int)(Math.random() % 60)))
-                .sorted((o1, o2) -> o1.getDuration() - o2.getDuration())
-                .collect(Collectors.toList());
 
+        List<ComplexTimeDto> complexIdsByLocation = apiService.findComplexIdsByLocation(cpId, complexIds);
+
+        // withinMap에 있는 RealComplex의 ID에서 동일한 ID를 complexIdsByLocation에서 찾아서 RealComplexSimpleResponseDto로 변환
+        List<RealComplexSimpleResponseDto> rtn = new ArrayList<>();
+        for(RealComplex complex : withinMap){
+            Long id = complex.getId();
+            Integer duration = 0;
+            for(ComplexTimeDto complexTimeDto : complexIdsByLocation){
+                if(Objects.equals(complexTimeDto.getId(), id)){
+                    duration = complexTimeDto.getDuration();
+                    break;
+                }
+            }
+            RealComplexSimpleResponseDto realComplexSimpleResponseDto = RealComplexSimpleResponseDto.fromEntity(complex, duration);
+            rtn.add(realComplexSimpleResponseDto);
+        }
+        return rtn;
     }
 
     @Transactional

@@ -27,6 +27,7 @@ public class APIConnector {
     public static Mono<String> getDataFromAPI (
             String endpoint,
             String path,
+            MultiValueMap<String, Object> queryBody,
             MultiValueMap<String, String> queryParams
     ) {
         HttpClient httpClient = HttpClient.create()
@@ -54,6 +55,7 @@ public class APIConnector {
                 .acceptCharset(StandardCharsets.UTF_8)
                 .ifNoneMatch("*")
                 .ifModifiedSince(ZonedDateTime.now())
+                .bodyValue(queryBody)
                 .retrieve();
 
         return bodySpec.exchangeToMono(response -> {
@@ -66,6 +68,8 @@ public class APIConnector {
             }
         });
     }
+
+
 
     public static Mono<String> postDataToAPI (
             String endpoint,
