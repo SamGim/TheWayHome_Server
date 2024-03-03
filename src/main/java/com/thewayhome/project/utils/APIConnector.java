@@ -19,6 +19,7 @@ import reactor.netty.http.client.HttpClient;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -74,7 +75,7 @@ public class APIConnector {
     public static Mono<String> postDataToAPI (
             String endpoint,
             String path,
-            MultiValueMap<String, Object> queryBody
+            HashMap<String, Object> queryBody
     ) {
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)

@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,8 +28,8 @@ import java.util.Objects;
 @Slf4j
 public class ApiService {
     private final APIConnector apiConnector;
-    private final String baseURL = "http://localhost:8080";
-//    private final String baseURL = "http://wasuphj.synology.me:8080";
+//    private final String baseURL = "http://localhost:8080";
+    private final String baseURL = "http://wasuphj.synology.me:8080";
     @Autowired
     public ApiService(APIConnector apiConnector) {
         this.apiConnector = apiConnector;
@@ -144,13 +145,14 @@ public class ApiService {
 
     public void uploadCompanyData(Company companyRequestDto) {
         String path = "/company/upload";
-        MultiValueMap<String, Object> queryBody = new LinkedMultiValueMap<>();
-        queryBody.add("id", companyRequestDto.getCompanyId());
-        queryBody.add("companyName", companyRequestDto.getCompanyName());
-        queryBody.add("address", companyRequestDto.getAddress());
-        queryBody.add("latitude", companyRequestDto.getLatitude());
-        queryBody.add("longitude", companyRequestDto.getLongitude());
+        HashMap<String, Object> queryBody = new HashMap<>();
+        queryBody.put("id", companyRequestDto.getCompanyId());
+        queryBody.put("companyName", companyRequestDto.getCompanyName());
+        queryBody.put("address", companyRequestDto.getAddress());
+        queryBody.put("latitude", companyRequestDto.getLatitude());
+        queryBody.put("longitude", companyRequestDto.getLongitude());
         Mono<String> response = APIConnector.postDataToAPI(baseURL, path, queryBody);
+        log.info("response = {}", response.block());
         if (!Objects.equals(response.block(), "ok")) {
             log.error("Error uploading company data, response = {}", response);
         }
@@ -158,12 +160,13 @@ public class ApiService {
 
     public void uploadComplexData(RealComplex realComplexRequestDto) {
         String path = "/complex/upload";
-        MultiValueMap<String, Object> queryBody = new LinkedMultiValueMap<>();
-        queryBody.add("id", realComplexRequestDto.getId());
-        queryBody.add("name", realComplexRequestDto.getName());
-        queryBody.add("latitude", realComplexRequestDto.getLatitude());
-        queryBody.add("longitude", realComplexRequestDto.getLongitude());
+        HashMap<String, Object> queryBody = new HashMap<>();
+        queryBody.put("id", realComplexRequestDto.getId());
+        queryBody.put("name", realComplexRequestDto.getName());
+        queryBody.put("latitude", realComplexRequestDto.getLatitude());
+        queryBody.put("longitude", realComplexRequestDto.getLongitude());
         Mono<String> response = APIConnector.postDataToAPI(baseURL, path, queryBody);
+        log.info("response = {}", response);
         if (!Objects.equals(response.block(), "ok")) {
             log.error("Error uploading complex data, response = {}", response);
         }

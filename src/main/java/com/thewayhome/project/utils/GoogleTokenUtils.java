@@ -5,6 +5,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 
 @Component
+@Slf4j
 public class GoogleTokenUtils extends AbstractTokenUtils{
 
     @Autowired
@@ -51,6 +53,7 @@ public class GoogleTokenUtils extends AbstractTokenUtils{
 
                 boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
                 String name = (String) payload.get("name");
+                log.info("name: {}", name);
                 String pictureUrl = (String) payload.get("picture");
                 String locale = (String) payload.get("locale");
                 String familyName = (String) payload.get("family_name");
@@ -58,13 +61,14 @@ public class GoogleTokenUtils extends AbstractTokenUtils{
 
                 // Use or store profile information
                 // ...
-
+                log.info("Valid ID token.");
+                return true;
             } else {
                 System.out.println("Invalid ID token.");
             }
         }
         catch (Exception e){
-
+            System.out.println(e);
         }
         return false;
     }

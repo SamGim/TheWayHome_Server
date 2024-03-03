@@ -96,6 +96,7 @@ public class ComplexService {
     @Transactional
     public RealComplexDetailResponseDto registerRealComplex(RealComplexRegisterRequestDto complexDto, MultipartFile mImage, List<MultipartFile> rImages){
         try{
+            log.info("complexDto = " + complexDto.getName());
             RealComplex complex = complexDto.toEntity();
             ComplexImageResponseDto mImageDto = null;
             // 대표사진 저장
