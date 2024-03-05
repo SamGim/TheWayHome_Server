@@ -1,13 +1,11 @@
 package com.thewayhome.project.dto.complex;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class SPLResponseDto {
     private String stNodeName;

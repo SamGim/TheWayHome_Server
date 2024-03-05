@@ -28,7 +28,7 @@ public class APIConnector {
     public static Mono<String> getDataFromAPI (
             String endpoint,
             String path,
-            MultiValueMap<String, Object> queryBody,
+            Object queryBody,
             MultiValueMap<String, String> queryParams
     ) {
         HttpClient httpClient = HttpClient.create()
@@ -60,11 +60,15 @@ public class APIConnector {
                 .retrieve();
 
         return bodySpec.exchangeToMono(response -> {
+            log.info("response = {}", response.statusCode());
+            log.info("response = {}", response.bodyToMono(String.class));
             if (response.statusCode().is2xxSuccessful()) {
                 return response.bodyToMono(String.class);
             } else if (response.statusCode().is4xxClientError()) {
+                log.error("response = {}", response.bodyToMono(String.class));
                 return Mono.error(new CustomException(CustomError.PTIS_SERVER_REQUEST_4XX_ERROR));
             } else {
+                log.error("response = {}", response.bodyToMono(String.class));
                 return Mono.error(new CustomException(CustomError.PTIS_SERVER_REQUEST_UNKNOWN_ERROR));
             }
         });

@@ -39,8 +39,9 @@ public class ApiService {
         String path = "/complexIds/" + String.format("%012d", companyId);
 
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        HashMap<String, Object> queryBody = new HashMap<>();
         // companyId 를 12자리 스트링으로 변환
-        Mono<String> jsonArrayString = APIConnector.getDataFromAPI(baseURL, path, null, queryParams);
+        Mono<String> jsonArrayString = APIConnector.getDataFromAPI(baseURL, path, queryBody, queryParams);
 
         return jsonArrayString.flatMapMany(jsonString -> {
             try {
@@ -69,9 +70,9 @@ public class ApiService {
     }
 
     public List<ComplexTimeDto> findComplexIdsByLocation(Long companyId, List<Long> complexIds) throws CustomException {
-        String path = "/complexIds/" + String.format("%012d", companyId);
+        String path = "/complex/location/" + String.format("%012d", companyId);
 
-        MultiValueMap<String, Object> queryBody = new LinkedMultiValueMap<>();
+        HashMap<String, Object> queryBody = new HashMap<>();
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
         // companyId 를 12자리 스트링으로 변환
         List<String> complexIdsString = new ArrayList<String>();
@@ -79,8 +80,8 @@ public class ApiService {
         for (Long complexId : complexIds) {
             complexIdsString.add(String.format("%012d", complexId));
         }
-        queryBody.add("complexIds", complexIdsString);
-        Mono<String> jsonArrayString = APIConnector.getDataFromAPI(baseURL, path, queryBody, queryParams);
+        queryBody.put("complexIds", complexIdsString);
+        Mono<String> jsonArrayString = APIConnector.getDataFromAPI(baseURL, path, complexIdsString, queryParams);
 
         return jsonArrayString.flatMapMany(jsonString -> {
             try {
@@ -112,10 +113,12 @@ public class ApiService {
         String path = "/spl";
 
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+        HashMap<String, Object> queryBody = new HashMap<>();
         // companyId 를 12자리 스트링으로 변환
-        queryParams.add("companyId", String.format("%012d", companyId));
-        queryParams.add("complexId", String.format("%012d", complexId));
-        Mono<String> jsonArrayString = APIConnector.getDataFromAPI(baseURL, path, null, queryParams);
+        queryParams.add("srcNodeName", String.format("%012d", companyId));
+        queryParams.add("destNodeName", String.format("%012d", complexId));
+
+        Mono<String> jsonArrayString = APIConnector.getDataFromAPI(baseURL, path, queryBody, queryParams);
 
         return jsonArrayString.flatMapMany(jsonString -> {
             try {
